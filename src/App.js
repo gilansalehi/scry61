@@ -103,7 +103,7 @@ class App extends Component {
       return  x < y ? -dir : dir;
     };
     // default to alphabetical sort, remove cards without the desired attribute
-    let preSort = cards.sort((a, b) => a.name < b.name ? -1 : 1).filter(a => a[sort]);
+    let preSort = cards.sort((a, b) => a.name < b.name ? -1 : 1).filter(a => a[sort] !== undefined);
     let results;
     switch (sort) {
       case 'power': results = preSort.sort(intParser); break;
