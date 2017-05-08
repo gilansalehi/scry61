@@ -115,7 +115,7 @@ export default class MultiSelect extends Component {
     const searchable = this.props.searchable;
     const { inputValue } = this.state;
     if ( typeof searchable === 'function' ) { return options.filter(searchable); }
-    return options.filter(opt => opt.name.indexOf(inputValue) !== -1);
+    return options.filter(opt => opt.name.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1);
   }
 
   handleInputChange = (e) => {

@@ -34,6 +34,12 @@ export default class Search extends Component {
     this.props.updateFilters({});
   }
 
+  clearFormatDropdown = () => {
+    this.setState({ format: '' });
+    this.formatDropdown.restoreDefaults();
+    this.props.updateFilters({ ...this.props.filters, byFormat: x => true });
+  }
+
   updateCardNameField = e => {
     e.preventDefault();
     const cardName = e.target.value.toLowerCase();
@@ -221,7 +227,9 @@ export default class Search extends Component {
               inlineStyles={formatDropdownStyles}
             />
           </span>
-          <span onClick={e => this.formatDropdown.restoreDefaults()}>x</span>
+          <span style={{paddingLeft:'3px'}}>
+            <Button handleClick={this.clearFormatDropdown} text={'×'} styles={{fontWeight:'bold'}} />
+          </span>
         </label>
         <label>
           <Button handleClick={this.clearAll} text='CLEAR ALL' styles={style.button} />
@@ -284,6 +292,7 @@ const formatDropdownStyles = {
     fontWeight: 'normal',
     padding: '3px 5px',
     textAlign: 'left',
+    color: 'lightgray',
   },
   dropdownLi: {
     display: 'block',
@@ -291,6 +300,7 @@ const formatDropdownStyles = {
     listStyle: 'inherits',
     padding: 0,
     margin: 0,
-    backgroundColor: '#999'
+    backgroundColor: '#999',
+    color: 'black',
   },
 }

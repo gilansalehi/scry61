@@ -82,10 +82,13 @@ export default class CardImage extends Component {
     if ( card.type === 'Scheme' ) {
       const schemeName = card.name.toLowerCase().replace(/(,|\?)/g, '').replace(/([^a-z])/g, '-');
       return `http://magiccards.info/extras/scheme/archenemy/${schemeName}.jpg`
-    } else {
+    } else if (printing.mciNumber) {
       const set = printing.mciSetCode || this.mapSetToCode(printing);
       const mci = this.mapStringToMCI(printing.mciNumber);
       return mci !== undefined ? `http://magiccards.info/scans/en/${set}/${mci}.jpg` : cardBackImagePath;
+    } else {
+      const cardId = printing.multiverseId;
+      return `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${cardId}&type=card`;
     }
   }
 

@@ -33,6 +33,7 @@ class App extends Component {
       const infoCode = SetData[code].magicCardsInfoCode;
       const setType = SetData[code].type;
       const releaseDate = SetData[code].releaseDate;
+
       setCards.forEach(c => {
         AllCards[c.name].sets = AllCards[c.name].sets || [];
         AllCards[c.name].sets.push(code);
@@ -53,6 +54,7 @@ class App extends Component {
           flavor: c.flavor,
           mciSetCode: infoCode,
           mciNumber: c.mciNumber || c.number,
+          multiverseId: c.multiverseid,
           rarity: c.rarity,
         });
       });
@@ -60,7 +62,7 @@ class App extends Component {
 
     const dummy = { name: '', type: '', text: '', colors: [], cmc: 0, rarities: [], };
     const cards = Object.values(AllCards).filter(c => c.name).map(c => Object.assign({}, dummy, c));
-
+    console.log(AllCards["Stronghold Assassin"]);
     this.setState({ cards });
   }
 
@@ -69,17 +71,9 @@ class App extends Component {
     const legacy = oldFormats.legacy || vintage;
     const modern = oldFormats.modern || (['core', 'expansion'].includes(setType) && new Date(releaseDate) >= new Date('2003-08-27'));
     const standard = oldFormats.standard || false;
-    const commander = oldFormats.commander || setType === "commander";
+    const commander = oldFormats.commander || vintage || setType === "commander";
 
     return { standard, modern, legacy, vintage, commander };
-  }
-
-  mergeFormats = (oldFormats, newFormats) => {
-    const formats = Object.keys(newFormats);
-    return formats.reduce((acc, format) => {
-      acc[format] = oldFormats[format] || newFormats[format];
-      return acc;
-    }, {});
   }
 
   getChildContext() {
