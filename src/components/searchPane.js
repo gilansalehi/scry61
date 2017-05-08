@@ -293,7 +293,7 @@ const formatDropdownStyles = {
     fontWeight: 'normal',
     padding: '3px 5px',
     textAlign: 'left',
-    color: 'lightgray',
+    color: 'gray',
   },
   dropdownLi: {
     display: 'block',
