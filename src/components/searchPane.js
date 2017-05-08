@@ -19,6 +19,7 @@ export default class Search extends Component {
       rarityOptions: 'OR',
       cardType: '',
       cardText: '',
+      format: '',
       cmc: {min: NaN, max: NaN},
       power: {min: NaN, max: NaN},
       toughness: {min: NaN, max: NaN},
@@ -29,6 +30,7 @@ export default class Search extends Component {
   clearAll = () => {
     const defaults = Object.assign({}, this.defaults);
     this.setState(defaults);
+    this.formatDropdown.restoreDefaults();
     this.props.updateFilters({});
   }
 
@@ -128,6 +130,13 @@ export default class Search extends Component {
     this.props.updateFilters({ ...this.props.filters, ...filterObj });
   }
 
+  updateFormatField = (selection) => {
+    const format = selection.selectedOptions[0].name.toLowerCase();
+    this.setState({ format });
+    const byFormat = card => card.formats[format];
+    this.props.updateFilters({...this.props.filters, byFormat });
+  }
+
   updateRangeField = (obj, attr) => {
     const {min, max} = obj;
     const newState = Object.assign({}, this.state[attr], {min, max});
@@ -193,6 +202,28 @@ export default class Search extends Component {
           updateOptions={this.updateRarityOptions}
         />
         <label>
+          <span style={style.span}>Format:</span>
+          <span>
+            <MultiSelect
+              ref={self => this.formatDropdown = self}
+              name={"Format"}
+              options={[
+                {name: 'Standard', id: 0},
+                {name: 'Modern', id: 1},
+                {name: 'Legacy', id: 2},
+                {name: 'Vintage', id: 3},
+                {name: 'Commander', id: 4},
+              ]}
+              multiple={false}
+              width={'175px'}
+              onChange={this.updateFormatField}
+              placeholder={'choose...'}
+              inlineStyles={formatDropdownStyles}
+            />
+          </span>
+          <span onClick={e => this.formatDropdown.restoreDefaults()}>x</span>
+        </label>
+        <label>
           <Button handleClick={this.clearAll} text='CLEAR ALL' styles={style.button} />
         </label>
       </div>
@@ -225,5 +256,41 @@ const style = {
     margin: '20px auto',
     textAlign: 'center',
     lineHeight: '24px',
+  },
+}
+
+const formatDropdownStyles = {
+  container: {
+    magin: '0',
+    position: 'relative',
+    fontFamily: '"Arial", sans-serif',
+    textTransform: 'none',
+  },
+  inputOutliner: {
+    border: '3px solid black',
+    borderRadius: '3px',
+  },
+  noPill: {
+    display: 'inline-block',
+    backgroundColor: 'transparent',
+    fontSize: '15px',
+    fontWeight: 'normal',
+    color: 'lightgray',
+    padding: '2px 0',
+  },
+  placeholder: {
+    padding: '0',
+    fontSize: '14px',
+    fontWeight: 'normal',
+    padding: '3px 5px',
+    textAlign: 'left',
+  },
+  dropdownLi: {
+    display: 'block',
+    width: '100%',
+    listStyle: 'inherits',
+    padding: 0,
+    margin: 0,
+    backgroundColor: '#999'
   },
 }

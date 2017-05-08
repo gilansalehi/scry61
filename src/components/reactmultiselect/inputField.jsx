@@ -78,6 +78,7 @@ const defaultStyles = {
     letterSpacing: '1.4px',
     fontFamily: 'Lato, Arial, sans-serif',
     boxShadow: 'none', // remove default styling on input field
+    width: '100%',
   },
 };
 

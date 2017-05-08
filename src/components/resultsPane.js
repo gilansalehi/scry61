@@ -80,6 +80,7 @@ export default class Results extends Component {
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
     const width = window.innerWidth - (deck ? 400 : 50) - (search ? 350 : 0) - 20;
+    const height = window.innerHeight - 160;
     const resultsStyle = Object.assign({}, { width });
     const sortsMenu = <ViewOptions sort={sort} sortDir={sortDir} updateSorts={updateSorts} setDefaultCardView={this.setDefaultCardView} />;
 
@@ -95,7 +96,7 @@ export default class Results extends Component {
         <div>
           { moreOptions && sortsMenu }
         </div>
-        <ul className='results-list'>
+        <ul className='results-list' style={{ height }}>
           { results }
         </ul>
         <div className='results-info' style={infoStyle}>

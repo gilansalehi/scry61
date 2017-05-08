@@ -145,6 +145,10 @@ export default class MultiSelect extends Component {
     return optionsList;
   }
 
+  restoreDefaults = () => {
+    this.setState(this.defaults);
+  }
+
   runCallbacks = (names, state = this.state) => {
     names.forEach((name) => {
       this.callbacks[name] && this.callbacks[name](state);

@@ -100,7 +100,7 @@ const defaultStyles = {
 
   dropdown: {
     position: 'relative',
-    backgroundColor: 'white',
+    background: 'transparent',
     width: '90%',
     top: 0, // parent container is .r-select-container, so adjust for input height. label is 28px, input is 40px by default.
     zIndex: 100,
@@ -119,7 +119,7 @@ const defaultStyles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'baseline',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     width: '90%',
     bottom: 0,
     zIndex: 100,

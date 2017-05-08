@@ -22,7 +22,7 @@ export default class DropdownOption extends Component {
     const styleObj = Object.assign(
       {},
       this.styles.dropdownOptionSpan,
-      { paddingLeft: `${10 + indent}px`, color },
+      { paddingLeft: `${0 + indent}px`, color },
     );
 
     return (
@@ -55,5 +55,5 @@ const defaultKlasses = {
 
 const defaultStyles = {
   dropdownOptionSpan: { width: '100%' },
-  dropdownOptionContainer: { padding: '5px 10px' },
+  dropdownOptionContainer: { padding: '5px 0' },
 };

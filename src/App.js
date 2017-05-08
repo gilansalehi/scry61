@@ -32,14 +32,20 @@ class App extends Component {
       const setCards = SetData[code].cards || [];
       const infoCode = SetData[code].magicCardsInfoCode;
       const setType = SetData[code].type;
+      const releaseDate = SetData[code].releaseDate;
       setCards.forEach(c => {
         AllCards[c.name].sets = AllCards[c.name].sets || [];
         AllCards[c.name].sets.push(code);
+        // rarities
         AllCards[c.name].rarities = AllCards[c.name].rarities || [];
         if (setType === 'core' || setType === 'expansion') {
           AllCards[c.name].rarities.push(c.rarity); // only include rarity values from format-legal sets.
           if (c.rarity === "Basic Land") { AllCards[c.name].rarities.push("Common"); } // treat basics as common
         }
+        // formats & legality
+        AllCards[c.name].formats = AllCards[c.name].formats || {};
+        AllCards[c.name].formats = this.calculateFormats(c, setType, releaseDate, AllCards[c.name].formats);
+        // printings, artists, & flavor text
         AllCards[c.name].printings = AllCards[c.name].printings || [];
         AllCards[c.name].printings.push({
           set: code,
@@ -56,6 +62,24 @@ class App extends Component {
     const cards = Object.values(AllCards).filter(c => c.name).map(c => Object.assign({}, dummy, c));
 
     this.setState({ cards });
+  }
+
+  calculateFormats = (card, setType, releaseDate, oldFormats) => {
+    const vintage = oldFormats.vintage || ['core', 'expansion'].includes(setType);
+    const legacy = oldFormats.legacy || vintage;
+    const modern = oldFormats.modern || (['core', 'expansion'].includes(setType) && new Date(releaseDate) >= new Date('2003-08-27'));
+    const standard = oldFormats.standard || false;
+    const commander = oldFormats.commander || setType === "commander";
+
+    return { standard, modern, legacy, vintage, commander };
+  }
+
+  mergeFormats = (oldFormats, newFormats) => {
+    const formats = Object.keys(newFormats);
+    return formats.reduce((acc, format) => {
+      acc[format] = oldFormats[format] || newFormats[format];
+      return acc;
+    }, {});
   }
 
   getChildContext() {
