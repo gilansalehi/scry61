@@ -59,7 +59,7 @@ export default class ManaSymbol extends Component {
         // rarity images
         case 'Common':      return 'https://cdn4.iconfinder.com/data/icons/free-social-media-icons/48/Black_button.png';
         case 'Uncommon':    return 'https://cdn4.iconfinder.com/data/icons/free-social-media-icons/16/Silver_button.png';
-        case 'Rare':        return 'https://cdn.pixabay.com/photo/2016/05/24/12/04/gold-1412245_960_720.png';
+        case 'Rare':        return 'https://cdn4.iconfinder.com/data/icons/free-social-media-icons/16/Yellow_button.png';
         case 'Mythic Rare': return 'https://cdn4.iconfinder.com/data/icons/free-social-media-icons/16/Orange_button.png';
         case 'Special':     return 'https://magidex.com/extstatic/symbol/set/TSP/s.svg';
         default: return false;

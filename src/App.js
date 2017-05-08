@@ -13,7 +13,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      show: { search: true, results: true, deck: true, },
+      show: { search: true, results: true, deck: false, },
       cards: [],
       filters: {},
       sort: 'name',

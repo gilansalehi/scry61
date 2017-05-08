@@ -26,14 +26,14 @@ export default class Results extends Component {
 
   }
 
-  prepareResults = () => {
-    const {cards, addToDeck, removeFromDeck } = this.props;
-    const {page, pageSize, cardView } = this.state;
+  prepareResults = (showImg) => {
+    const {cards, addToDeck, removeFromDeck} = this.props;
+    const {page, pageSize, cardView} = this.state;
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
     const [start, end] = [currentPage*pageSize, (currentPage + 1)*pageSize];
     const customStyle = {
-      countStyle: {width:'165px', display:'inline-block'},
+      countStyle: {width:'150px', display:'inline-block'},
     };
 
     return cards.slice(start, end).map((c, i) => {
@@ -42,7 +42,7 @@ export default class Results extends Component {
           <CardDisplayer key={c.name}
             style={customStyle}
             data={c}
-            showImage={true}
+            showImage={showImg}
             showSet={true}
             collapsed={ cardView === 'COLLAPSED' }
             addToDeck={ addToDeck }
@@ -76,11 +76,12 @@ export default class Results extends Component {
   render() {
     const { page, pageSize, moreOptions } = this.state;
     const { sort, sortDir, updateSorts, cards, show: { search, deck } } = this.props;
-    const results = this.prepareResults();
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
     const width = window.innerWidth - (deck ? 400 : 50) - (search ? 350 : 0) - 20;
+    const showImg = width > 600;
     const height = window.innerHeight - 160;
+    const results = this.prepareResults(showImg);
     const resultsStyle = Object.assign({}, { width });
     const sortsMenu = <ViewOptions sort={sort} sortDir={sortDir} updateSorts={updateSorts} setDefaultCardView={this.setDefaultCardView} />;
 

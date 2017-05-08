@@ -164,10 +164,10 @@ export default class Search extends Component {
       <div className='search-pane clearfix'>
         <label>
           <span style={style.span}>Name:</span>
-          <input value={cardName}
-            onChange={e => this.updateCardNameField(e)}
-            style={style.input}
-          />
+            <input value={cardName}
+              onChange={e => this.updateCardNameField(e)}
+              style={style.input}
+            />
         </label>
         <ColorPicker
           updateColors={ this.updateColors }
@@ -246,6 +246,7 @@ const style = {
     backgroundColor: 'transparent',
     padding: '3px',
     color: '#eee',
+    width: '169px',
   },
   ul: {
     display: 'inline-block',

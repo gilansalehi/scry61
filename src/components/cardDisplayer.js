@@ -35,7 +35,6 @@ export default class CardDisplayer extends Component {
     return (
       <div className='card-displayer'>
         <div className='card-header-bar' style={style.header}>
-          { showSet && <span></span> }
           <span className='card-count' style={style.countStyle}>{ cardCount }</span>
           <CardHead data={ data } expanded={ expanded } cardStyle={ cardStyle }/>
           <CardActions data={ data }
@@ -54,7 +53,11 @@ export default class CardDisplayer extends Component {
 }
 
 const styles = {
-  header: { width: '100%' },
+  header: {
+    width: '100%',
+    display:'flex',
+    justifyContent:'space-between',
+  },
   countStyle: {
     float: 'left',
     fontWeight: 'bold',

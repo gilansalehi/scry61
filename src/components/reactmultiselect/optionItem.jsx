@@ -18,7 +18,7 @@ export default class DropdownOption extends Component {
   render() {
     const indent = this.props.depth * 20 || 0;
     const { disabled } = this.props;
-    const color = ( disabled ? 'lightgray' : '#666565' );
+    const color = ( disabled ? 'lightgray' : 'black' );
     const styleObj = Object.assign(
       {},
       this.styles.dropdownOptionSpan,
