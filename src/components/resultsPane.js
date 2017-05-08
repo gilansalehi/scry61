@@ -33,7 +33,7 @@ export default class Results extends Component {
     const currentPage = Math.min(page, maxPage);
     const [start, end] = [currentPage*pageSize, (currentPage + 1)*pageSize];
     const customStyle = {
-      countStyle: {width:'150px', display:'inline-block'},
+      countStyle: {width:'165px', display:'inline-block'},
     };
 
     return cards.slice(start, end).map((c, i) => {
