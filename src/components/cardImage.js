@@ -79,9 +79,13 @@ export default class CardImage extends Component {
   }
 
   calculateImagePath = (card, printing) => {
+    const hyphenize = name => name.toLowerCase().replace(/(,|\?)/g, '').replace(/([^a-z])/g, '-');
     if ( card.type === 'Scheme' ) {
-      const schemeName = card.name.toLowerCase().replace(/(,|\?)/g, '').replace(/([^a-z])/g, '-');
+      const schemeName = hyphenize(card.name);
       return `http://magiccards.info/extras/scheme/archenemy/${schemeName}.jpg`
+    } else if ( card.types[0] === 'Plane' ) {
+      const planeName = hyphenize(card.name);
+      return `http://magiccards.info/extras/plane/planechase/${planeName}.jpg`
     } else if (printing.mciNumber) {
       const set = printing.mciSetCode || this.mapSetToCode(printing);
       const mci = this.mapStringToMCI(printing.mciNumber);
