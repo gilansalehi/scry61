@@ -5,8 +5,9 @@ import Results from './components/resultsPane';
 import Search from './components/searchPane';
 import Deck from './components/deckPane';
 import Modal from './components/modalPane';
-import * as CardData from './utils/AllCards';
-import * as SetData from './utils/AllSets';
+import fetchAllSets from './utils/SetFetcher';
+// import * as CardData from './utils/AllCards';
+// import * as SetData from './utils/AllSets';
 
 class App extends Component {
   constructor(props) {
@@ -26,44 +27,46 @@ class App extends Component {
 
   // STARTUP
   componentDidMount() {
-    const AllCards = CardData;
-    const setCodes = Object.keys(SetData);
-    setCodes.forEach(code => {
-      const setCards = SetData[code].cards || [];
-      const infoCode = SetData[code].magicCardsInfoCode;
-      const setType = SetData[code].type;
-      const releaseDate = SetData[code].releaseDate;
+    let self = this;
+    fetchAllSets().then(AllSets => {
+      const AllCards = self.buildAllCards(AllSets);
+      const dummy = { name: '', type: '', text: '', colors: [], cmc: 0, rarities: [], };
+      const cards = Object.values(AllCards).filter(c => c.name).map(c => Object.assign({}, dummy, c));
+      self.setState({ cards });
+    });
+  }
 
-      setCards.forEach(c => {
+  buildAllCards = (AllSets) => {
+    let AllCards = {};
+    AllSets.forEach(set => {
+      const { code, cards, type, releaseDate, magicCardsInfoCode } = set;
+      cards.forEach(c => {
+        AllCards[c.name] = AllCards[c.name] || c;
         AllCards[c.name].sets = AllCards[c.name].sets || [];
         AllCards[c.name].sets.push(code);
         // rarities
         AllCards[c.name].rarities = AllCards[c.name].rarities || [];
-        if (setType === 'core' || setType === 'expansion') {
+        if (type === 'core' || type === 'expansion') {
           AllCards[c.name].rarities.push(c.rarity); // only include rarity values from format-legal sets.
           if (c.rarity === "Basic Land") { AllCards[c.name].rarities.push("Common"); } // treat basics as common
         }
         // formats & legality
         AllCards[c.name].formats = AllCards[c.name].formats || {};
-        AllCards[c.name].formats = this.calculateFormats(c, setType, releaseDate, AllCards[c.name].formats);
+        AllCards[c.name].formats = this.calculateFormats(c, type, releaseDate, AllCards[c.name].formats);
         // printings, artists, & flavor text
         AllCards[c.name].printings = AllCards[c.name].printings || [];
         AllCards[c.name].printings.push({
           set: code,
           artist: c.artist,
           flavor: c.flavor,
-          mciSetCode: infoCode,
+          mciSetCode: magicCardsInfoCode,
           mciNumber: c.mciNumber || c.number,
           multiverseId: c.multiverseid,
           rarity: c.rarity,
         });
       });
     });
-
-    const dummy = { name: '', type: '', text: '', colors: [], cmc: 0, rarities: [], };
-    const cards = Object.values(AllCards).filter(c => c.name).map(c => Object.assign({}, dummy, c));
-    console.log(AllCards["Stronghold Assassin"]);
-    this.setState({ cards });
+    return AllCards;
   }
 
   calculateFormats = (card, setType, releaseDate, oldFormats) => {

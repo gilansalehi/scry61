@@ -246,7 +246,7 @@ const style = {
     backgroundColor: 'transparent',
     padding: '3px',
     color: '#eee',
-    width: '169px',
+    width: '164px',
   },
   ul: {
     display: 'inline-block',
