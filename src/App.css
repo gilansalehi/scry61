@@ -147,6 +147,15 @@ label {
   height: 100%;
 }
 
+.pending {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  text-transform: uppercase;
+  font-family: 'Cinzel', serif;
+}
 /*SPINNER*/
 
 .sk-folding-cube {

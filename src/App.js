@@ -5,6 +5,7 @@ import Results from './components/resultsPane';
 import Search from './components/searchPane';
 import Deck from './components/deckPane';
 import Modal from './components/modalPane';
+import Spinner from './components/spinner';
 import fetchAllSets from './utils/SetFetcher';
 // import * as CardData from './utils/AllCards';
 // import * as SetData from './utils/AllSets';
@@ -22,6 +23,7 @@ class App extends Component {
       deck: [],
       deckName: '',
       modal: { show: false, children: [], },
+      pending: true,
     }
   }
 
@@ -32,7 +34,7 @@ class App extends Component {
       const AllCards = self.buildAllCards(AllSets);
       const dummy = { name: '', type: '', text: '', colors: [], cmc: 0, rarities: [], };
       const cards = Object.values(AllCards).filter(c => c.name).map(c => Object.assign({}, dummy, c));
-      self.setState({ cards });
+      self.setState({ cards, pending: false });
     });
   }
 
@@ -198,9 +200,21 @@ class App extends Component {
   }
 
   render() {
-    const { cards, filters, deck, deckName, modal, show, sort, sortDir } = this.state;
+    const { cards, filters, deck, deckName, modal, show, sort, sortDir, pending } = this.state;
     const filteredCards = this.applyFilters(cards);
     const sortedCards = this.applySorts(filteredCards);
+    const results = (
+      <Results
+        show={ show }
+        addToDeck={ this.addToDeck }
+        removeFromDeck={ this.removeFromDeck }
+        updateSorts={ this.updateSorts }
+        sort={ sort }
+        sortDir={ sortDir }
+        cards={ sortedCards }
+      />
+    )
+    const spinner = <Spinner />;
 
     return (
       <div className="App">
@@ -214,15 +228,7 @@ class App extends Component {
             updateFilters={ this.updateFilters }
             filters={ filters }
           />
-          <Results
-            show={ show }
-            addToDeck={ this.addToDeck }
-            removeFromDeck={ this.removeFromDeck }
-            updateSorts={ this.updateSorts }
-            sort={ sort }
-            sortDir={ sortDir }
-            cards={ sortedCards }
-          />
+          { pending ? spinner : results }
           <Deck
             toggleShow={ this.toggleShow }
             displayed={ show.deck }
