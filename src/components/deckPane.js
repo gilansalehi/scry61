@@ -80,9 +80,19 @@ export default class Deck extends Component {
     return list;
   }
 
+  showTips = () => {
+    return (
+      <li style={tipStyle}>
+        Add cards to your deck by clicking <br/>
+        the [+] icon on cards in your search <br/>
+        results
+      </li>
+    );
+  }
+
   render() {
     const { cards, saveDeck, loadDeck, displayed } = this.props;
-    const list = this.prepareList(cards);
+    const list = cards.length ? this.prepareList(cards) : this.showTips();
     const display = displayed ? 'inline-block' : 'none';
     const deckPaneStyle = Object.assign({}, { display });
 
@@ -142,4 +152,11 @@ const spacerStyle = {
   color: 'black',
   fontSize: '16px',
   lineHeight: '24px',
+}
+
+const tipStyle = {
+  margin: '100px auto',
+  color: 'gray',
+  textAlign: 'center',
+  fontSize: '14px',
 }
