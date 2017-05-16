@@ -75,7 +75,7 @@ class App extends Component {
     const vintage = oldFormats.vintage || ['core', 'expansion'].includes(setType);
     const legacy = oldFormats.legacy || vintage;
     const modern = oldFormats.modern || (['core', 'expansion'].includes(setType) && new Date(releaseDate) >= new Date('2003-08-27'));
-    const standard = oldFormats.standard || false;
+    const standard = oldFormats.standard || (['core', 'expansion'].includes(setType) && new Date(releaseDate) >= new Date('2015-09-27'));
     const commander = oldFormats.commander || vintage || setType === "commander";
 
     return { standard, modern, legacy, vintage, commander };
@@ -136,7 +136,7 @@ class App extends Component {
     return results;
   }
 
-  updateFilters = filters => this.setState({ filters })
+  updateFilters = (filters) => this.setState({ filters })
   updateSorts = ({ sort, sortDir }) => this.setState({ sort, sortDir })
 
   //DECK ACTIONS
