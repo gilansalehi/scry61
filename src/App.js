@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Results from './components/resultsPane';
 import Search from './components/searchPane';
@@ -13,7 +12,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      show: { search: true, results: true, deck: false, },
+      show: { search: true, results: true, deck: true, },
       cards: [],
       filters: {},
       sort: 'name',
@@ -32,7 +31,7 @@ class App extends Component {
       const AllCards = self.buildAllCards(AllSets);
       const dummy = { name: '', type: '', text: '', colors: [], cmc: 0, rarities: [], };
       const cards = Object.values(AllCards).filter(c => c.name).map(c => Object.assign({}, dummy, c));
-      self.setState({ cards, pending: false });
+      self.setState({ cards, pending: false, show: { search: true, results: true, deck: false } });
     });
   }
 

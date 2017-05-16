@@ -92,7 +92,9 @@ export default class Results extends Component {
             Per Page: <input value={ pageSize } onChange={(e) => this.setPageSize(e)} style={inputStyle} />
           </span>
           <PageJumper currentPage={currentPage} pageSize={pageSize} maxPage={maxPage} setPage={this.setPage} />
-          <span className='expando hover-hands' onClick={ this.toggleShow }>{ this.state.moreOptions ? '▴' : '▾' }</span>
+          <span className='expando hover-hands' title="Sorts and View Options" onClick={ this.toggleShow }>
+            { this.state.moreOptions ? '▴' : '▾' }
+          </span>
         </div>
         <div>
           { moreOptions && sortsMenu }
