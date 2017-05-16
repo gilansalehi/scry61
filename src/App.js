@@ -7,8 +7,6 @@ import Deck from './components/deckPane';
 import Modal from './components/modalPane';
 import Spinner from './components/spinner';
 import fetchAllSets from './utils/SetFetcher';
-// import * as CardData from './utils/AllCards';
-// import * as SetData from './utils/AllSets';
 
 class App extends Component {
   constructor(props) {
