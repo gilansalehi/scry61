@@ -85,7 +85,8 @@ export default class Deck extends Component {
       <li style={tipStyle}>
         Add cards to your deck by clicking <br/>
         the [+] icon on cards in your search <br/>
-        results
+        results.  Collapse this pane to <br/>
+        show card images in search results.
       </li>
     );
   }

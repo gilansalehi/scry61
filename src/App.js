@@ -31,7 +31,7 @@ class App extends Component {
       const AllCards = self.buildAllCards(AllSets);
       const dummy = { name: '', type: '', text: '', colors: [], cmc: 0, rarities: [], };
       const cards = Object.values(AllCards).filter(c => c.name).map(c => Object.assign({}, dummy, c));
-      self.setState({ cards, pending: false, show: { search: true, results: true, deck: false } });
+      self.setState({ cards, pending: false });
     });
   }
 
