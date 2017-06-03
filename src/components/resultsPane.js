@@ -18,8 +18,8 @@ export default class Results extends Component {
     };
   }
 
-  componentWillReceiveProps() {
-    this.setPage(0);
+  componentWillReceiveProps(nextProps) {
+    this.props.cards.length !== nextProps.cards.length && this.setPage(0);
   }
 
   applySorts = () => {
