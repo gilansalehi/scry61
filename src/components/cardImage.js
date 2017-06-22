@@ -86,7 +86,8 @@ export default class CardImage extends Component {
     } else if ( card.types[0] === 'Plane' ) {
       const planeName = hyphenize(card.name);
       return `http://magiccards.info/extras/plane/planechase/${planeName}.jpg`
-    } else if (printing.mciNumber) {
+    } else if ( printing.mciNumber ) {
+      if ( printing.set === 'pPRE' ) { return cardBackImagePath; }
       const set = printing.mciSetCode || this.mapSetToCode(printing);
       const mci = this.mapStringToMCI(printing.mciNumber);
       return mci !== undefined ? `http://magiccards.info/scans/en/${set}/${mci}.jpg` : cardBackImagePath;
