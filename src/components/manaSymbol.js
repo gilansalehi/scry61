@@ -12,6 +12,7 @@ export default class ManaSymbol extends Component {
         case 'G': return 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/8/88/G.svg';
         case 'C': return 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/1/1a/C.svg'; // colorless mana
         case 'S': return 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/5/56/S.svg'; // snow mana
+        case 'E': return 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/7/7c/E.svg'; // energy symbol
         case 'T': return 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/b/be/T.svg'; // tap symbol
         case 'Q': return 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/2/2c/Q.svg'; // untap symbol
         case 'X': return 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/3/3f/X.svg';
