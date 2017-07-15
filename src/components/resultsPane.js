@@ -93,7 +93,7 @@ export default class Results extends Component {
           </span>
           <PageJumper currentPage={currentPage} pageSize={pageSize} maxPage={maxPage} setPage={this.setPage} />
           <span className='expando hover-hands' title="Sorts and View Options" onClick={ this.toggleShow }>
-            { this.state.moreOptions ? '▴' : '▾' }
+            Options: { this.state.moreOptions ? '▴' : '▾' }
           </span>
         </div>
         <div>
