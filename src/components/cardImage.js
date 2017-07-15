@@ -66,7 +66,7 @@ export default class CardImage extends Component {
       case 'VIS': return 'vi'; // visions
       case 'WTH': return 'wl'; // weatherlight
       case 'pCEL': return 'uqc'; // various promos
-      case 'pPRE': return 'ptc';
+      case 'pPRE': return 'ptc'; // prerelease promos; img links broken
       case 'pREL': return 'rep'; // release event
       case 'pMEI': return 'mbp';
       case 'pMGD': return 'mgdc'; // magic game day promo

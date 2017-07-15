@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CardHeader from './cardHead';
 import CardBody from './cardBody';
 import ManaSymbol from './manaSymbol';
+import mapSetToCode from '../utils/mapSetToCode';
 
 export default class CardInspector extends Component {
   constructor(props) {
@@ -80,24 +81,39 @@ export default class CardInspector extends Component {
     }
   }
 
+  prepareCanvas = () => {
+    const {imageUrl} = this.props;
+    return (
+      <div key={1} className='canvas'
+        style={{
+          width: '312px',
+          height: '445px',
+          margin: 'auto',
+          backgroundImage: `url(${imageUrl})`
+        }}
+      >
+      </div>
+    );
+  }
+
+  extractPriceInfo = () => {
+    const priceTable = document.getElementById('iframe1').contentWindow.document.getElementById('TCGPHiLoTable');
+    this.setState({ priceTable })
+  }
+
   render() {
     const { card } = this.props;
     const { view, printing } = this.state;
-    // const html = this.prepareHtml(card, view);
+    const { mciSetCode, mciNumber } = printing;
+    const set = mciSetCode || mapSetToCode(printing);
+    const iframeUrl = `http://magiccards.info/${set}/en/${mciNumber}.html`;
+    // const canvas = this.prepareCanvas();
     return (
       <div className='card-inspector clearfix'>
         <div className='card-inspector-actions'></div>
-        <div className='card-inspector-display' style={{margin:'auto'}}>
-          <div key={1} className='canvas'
-            style={{
-              width: '312px',
-              height: '445px',
-              margin: 'auto',
-              backgroundImage: `url(${this.props.imageUrl})`
-            }}
-          >
-          </div>
-        </div>
+        <div className='card-inspector-display' style={{margin:'auto'}}></div>
+        <iframe id='iframe1' src={iframeUrl} width='100%' height='800px'>
+        </iframe>
       </div>
     )
   }

@@ -39,6 +39,7 @@ class App extends Component {
     let AllCards = {};
     AllSets.forEach(set => {
       const { code, cards, type, releaseDate, magicCardsInfoCode } = set;
+      const setName = set.name;
       cards.forEach(c => {
         AllCards[c.name] = AllCards[c.name] || c;
         AllCards[c.name].sets = AllCards[c.name].sets || [];
@@ -56,6 +57,7 @@ class App extends Component {
         AllCards[c.name].printings = AllCards[c.name].printings || [];
         AllCards[c.name].printings.push({
           set: code,
+          setName: setName,
           artist: c.artist,
           flavor: c.flavor,
           mciSetCode: magicCardsInfoCode,
