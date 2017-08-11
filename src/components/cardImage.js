@@ -78,6 +78,22 @@ export default class CardImage extends Component {
     }
   }
 
+  mapVanguardToImgPath = (name) => {
+    var pathData = {};
+    ['ashnod', 'barrin', 'crovax', 'aladamri', 'ertai', 'gerrard', 'greven-il-vec',
+    'hanna', 'hells-caretaker', 'jaya-ballard', 'karn', 'lyna'].forEach(c => {
+      pathData[c] = `http://magiccards.info/extras/other/vanguard/${c}.jpg`
+    });
+    ['eladamri-lord-of-leaves', 'gix', 'hells-caretaker', 'jaya-ballard-task-mage',
+    'serra-angel', 'maraxus', 'mirri', 'mishra', 'multani', 'oracle', 'orim',
+    'rofellos', 'selenia', 'serra', 'sidar-kondo', 'sisay', 'squee',
+    'sliver-queen-brood-mother', 'starke', 'tahngarth', 'takara', 'tawnos',
+    'titania', 'xantcha', 'urza', 'volrath'].forEach(c => {
+      pathData[c] = `http://magiccards.info/extras/other/vanguard-mtgo/${c}.jpg`
+    });
+    return pathData[name] ? pathData[name] : `http://magiccards.info/extras/other/vanguard-mtgo-2/${name}.jpg`;
+  }
+
   calculateImagePath = (card, printing) => {
     const hyphenize = name => name.toLowerCase().replace(/(,|\?)/g, '').replace(/([^a-z])/g, '-');
     if ( card.type === 'Scheme' ) {
@@ -85,7 +101,10 @@ export default class CardImage extends Component {
       return `http://magiccards.info/extras/scheme/archenemy/${schemeName}.jpg`
     } else if ( card.types[0] === 'Plane' ) {
       const planeName = hyphenize(card.name);
-      return `http://magiccards.info/extras/plane/planechase/${planeName}.jpg`
+      return `http://magiccards.info/extras/plane/planechase-anthology/${planeName}.jpg`
+    } else if ( card.type === 'Vanguard' ) {
+      const vanguardName = hyphenize(card.name.toLowerCase().replace("'", '').replace(' avatar', ''));
+      return this.mapVanguardToImgPath(vanguardName);
     } else if ( printing.mciNumber ) {
       if ( printing.set === 'pPRE' ) { return cardBackImagePath; }
       const set = printing.mciSetCode || this.mapSetToCode(printing);

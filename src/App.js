@@ -44,6 +44,11 @@ class App extends Component {
         AllCards[c.name] = AllCards[c.name] || c;
         AllCards[c.name].sets = AllCards[c.name].sets || [];
         AllCards[c.name].sets.push(code);
+        // types
+        AllCards[c.name].types = AllCards[c.name].types || [];
+        if (c.type === 'Vanguard') {
+          debugger;
+        }
         // rarities
         AllCards[c.name].rarities = AllCards[c.name].rarities || [];
         if (type === 'core' || type === 'expansion') {
