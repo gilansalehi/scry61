@@ -26,12 +26,14 @@ export default class Search extends Component {
       toughness: {min: NaN, max: NaN},
     };
     this.state = Object.assign({}, this.defaults);
+    this.kids = this.kids || {};
   }
 
   clearAll = () => {
     const defaults = Object.assign({}, this.defaults);
     this.setState(defaults);
     this.formatDropdown.restoreDefaults();
+    Object.values(this.kids).forEach(k => k.clearInput());
     this.props.updateFilters({});
   }
 
@@ -163,7 +165,10 @@ export default class Search extends Component {
       <div className='search-pane clearfix'>
         <label className='search-label'>
           <span style={style.span}>Name:</span>
-          <Debouncer value={cardName} changed={e => this.updateCardNameField(e)} />
+          <Debouncer ref={self => this.kids.cardNameInput = self}
+            value={cardName}
+            changed={e => this.updateCardNameField(e)}
+          />
         </label>
         <ColorPicker
           updateColors={ this.updateColors }
@@ -173,14 +178,16 @@ export default class Search extends Component {
         />
         <label className='search-label'>
           <span style={style.span}>Type:</span>
-          <Debouncer value={cardType}
+          <Debouncer ref={self => this.kids.cardTypeInput = self}
+            value={cardType}
             changed={e => this.updateCardTypeField(e)}
             style={style.input}
           />
         </label>
         <label className='search-label'>
           <span style={style.span}>Text:</span>
-          <Debouncer value={cardText}
+          <Debouncer ref={self => this.kids.cardTextInput = self}
+            value={cardText}
             changed={e => this.updateCardTextField(e)}
             style={style.input}
           />
@@ -210,10 +217,10 @@ export default class Search extends Component {
               ref={self => this.formatDropdown = self}
               name={"Format"}
               options={[
-                {name: 'Standard', id: 0},
-                {name: 'Modern', id: 1},
-                {name: 'Legacy', id: 2},
-                {name: 'Vintage', id: 3},
+                {name: 'Standard',  id: 0},
+                {name: 'Modern',    id: 1},
+                {name: 'Legacy',    id: 2},
+                {name: 'Vintage',   id: 3},
                 {name: 'Commander', id: 4},
               ]}
               multiple={false}
