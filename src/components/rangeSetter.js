@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Button from './button';
 
 export default class RangeSetter extends Component {
 
@@ -20,6 +21,12 @@ export default class RangeSetter extends Component {
           onChange={e => callback({ min, max: e.target.value })}
           value={min === max || isNaN(max) ? '' : max}
         />
+        <span style={{paddingLeft:'5px'}} className='clear-field'>
+          <Button text={'×'}
+            handleClick={e => callback({ min: NaN, max: NaN })}
+            styles={{fontWeight:'bold'}}
+          />
+        </span>
       </span>
     );
   }

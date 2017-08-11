@@ -5,6 +5,7 @@ import MultiSelect from './reactmultiselect/multiselect';
 import Button from './button';
 import RangeSetter from './rangeSetter';
 import RarityPicker from './rarityPicker';
+import Debouncer from './debouncer';
 
 export default class Search extends Component {
 
@@ -41,10 +42,9 @@ export default class Search extends Component {
   }
 
   updateCardNameField = e => {
-    e.preventDefault();
-    const cardName = e.target.value.toLowerCase();
+    // e.preventDefault();
+    const cardName = e.toLowerCase();
     this.setState({ cardName });
-
     this.props.updateFilters({
       ...this.props.filters,
       byName: card => card.name.toLowerCase().indexOf(cardName) !== -1,
@@ -52,7 +52,7 @@ export default class Search extends Component {
   }
 
   updateCardTextField = e => {
-    const cardText = e.target.value.toLowerCase();
+    const cardText = e.toLowerCase();
     this.setState({ cardText });
     this.props.updateFilters({
       ...this.props.filters,
@@ -61,8 +61,7 @@ export default class Search extends Component {
   }
 
   updateCardTypeField = e => {
-    e.preventDefault();
-    const cardType = e.target.value.toLowerCase();
+    const cardType = e.toLowerCase();
     this.setState({ cardType });
 
     this.props.updateFilters({
@@ -162,12 +161,9 @@ export default class Search extends Component {
     const cmcStyle = Object.assign({}, style.input, {width:'30px'});
     return (
       <div className='search-pane clearfix'>
-        <label>
+        <label className='search-label'>
           <span style={style.span}>Name:</span>
-            <input value={cardName}
-              onChange={e => this.updateCardNameField(e)}
-              style={style.input}
-            />
+          <Debouncer value={cardName} changed={e => this.updateCardNameField(e)} />
         </label>
         <ColorPicker
           updateColors={ this.updateColors }
@@ -175,29 +171,29 @@ export default class Search extends Component {
           colors={ colors }
           colorOptions={ colorOptions }
         />
-        <label>
+        <label className='search-label'>
           <span style={style.span}>Type:</span>
-          <input value={cardType}
-            onChange={e => this.updateCardTypeField(e)}
+          <Debouncer value={cardType}
+            changed={e => this.updateCardTypeField(e)}
             style={style.input}
           />
         </label>
-        <label>
+        <label className='search-label'>
           <span style={style.span}>Text:</span>
-          <input value={cardText}
-            onChange={e => this.updateCardTextField(e)}
+          <Debouncer value={cardText}
+            changed={e => this.updateCardTextField(e)}
             style={style.input}
           />
         </label>
-        <label>
+        <label className='search-label'>
           <span style={style.span}>CMC:</span>
           <RangeSetter placeholder={'CMC'} min={cmc.min} max={cmc.max} callback={data => this.updateRangeField(data, 'cmc')} />
         </label>
-        <label>
+        <label className='search-label'>
           <span style={style.span}>Power:</span>
           <RangeSetter placeholder={'PWR'} min={power.min} max={power.max} callback={data => this.updateRangeField(data, 'power')} />
         </label>
-        <label>
+        <label className='search-label'>
           <span style={style.span}>Tough:</span>
           <RangeSetter placeholder={'TGH'} min={toughness.min} max={toughness.max} callback={data => this.updateRangeField(data, 'toughness')} />
         </label>
@@ -207,7 +203,7 @@ export default class Search extends Component {
           handleClick={this.handleRarityClick}
           updateOptions={this.updateRarityOptions}
         />
-        <label>
+        <label className='search-label'>
           <span style={style.span}>Format:</span>
           <span>
             <MultiSelect
@@ -227,11 +223,14 @@ export default class Search extends Component {
               inlineStyles={formatDropdownStyles}
             />
           </span>
-          <span style={{paddingLeft:'3px'}}>
-            <Button handleClick={this.clearFormatDropdown} text={'×'} styles={{fontWeight:'bold'}} />
+          <span style={{paddingLeft:'3px'}} className='clear-field'>
+            <Button
+              handleClick={this.clearFormatDropdown}
+              text={'×'} styles={{fontWeight:'bold'}}
+            />
           </span>
         </label>
-        <label>
+        <label className='search-label'>
           <Button handleClick={this.clearAll} text='CLEAR ALL' styles={style.button} />
         </label>
       </div>

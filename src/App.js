@@ -135,7 +135,10 @@ class App extends Component {
     return results;
   }
 
-  updateFilters = (filters) => this.setState({ filters })
+  updateFilters = (filters) => {
+    debounce(this.setState({ filters }), 500)
+  }
+
   updateSorts = ({ sort, sortDir }) => this.setState({ sort, sortDir })
 
   //DECK ACTIONS
@@ -262,5 +265,17 @@ const buttonStyle = {
   textAlign: 'center',
   lineHeight: '21px',
 };
+
+const debounce = function(func, delay) {
+  var inDebounce = undefined;
+  return function() {
+    var context = this,
+      args = arguments;
+    clearTimeout(inDebounce);
+    return inDebounce = setTimeout(function() {
+      return func.apply(context, args);
+    }, delay);
+  }
+}
 
 export default App;

@@ -245,3 +245,11 @@ label {
     opacity: 0;
   }
 }
+
+.search-label .clear-field {
+  display: none;
+}
+
+.search-label:hover .clear-field {
+  display: inline-block;
+}
