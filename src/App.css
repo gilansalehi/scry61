@@ -46,6 +46,7 @@ ul, li {
 .card-image {
   background-image: url('https://upload.wikimedia.org/wikipedia/en/a/aa/Magic_the_gathering-card_back.jpg');
   background-size: 150px 225px;
+  overflow: hidden;
 }
 
 .card-mana-cost {

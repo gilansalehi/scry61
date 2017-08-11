@@ -119,7 +119,7 @@ export default class CardImage extends Component {
         onClick={this.openCardInspector}
         src={sourcePath}
         style={imgStyle}
-        alt={sourcePath}
+        alt={''}
       />
     )
   }
