@@ -107,7 +107,7 @@ export default class CardInspector extends Component {
     const { mciSetCode, mciNumber } = printing;
     const set = mciSetCode || mapSetToCode(printing);
     let iframeUrl;
-    if ( card.type === 'Vanguard' || card.types.includes('Plane') ) {
+    if ( card.type === 'Vanguard' || card.types.includes('Plane') || card.type === 'Scheme' ) {
       iframeUrl = imageUrl.replace('jpg', 'html').replace('extras', 'extra').replace('scans/', '');
     } else {
       iframeUrl = `http://magiccards.info/${set}/en/${mciNumber}.html`;
