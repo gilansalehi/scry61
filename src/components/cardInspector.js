@@ -102,11 +102,16 @@ export default class CardInspector extends Component {
   }
 
   render() {
-    const { card } = this.props;
+    const { card, imageUrl } = this.props;
     const { view, printing } = this.state;
     const { mciSetCode, mciNumber } = printing;
     const set = mciSetCode || mapSetToCode(printing);
-    const iframeUrl = `http://magiccards.info/${set}/en/${mciNumber}.html`;
+    let iframeUrl;
+    if ( card.type === 'Vanguard' || card.types.includes('Plane') ) {
+      iframeUrl = imageUrl.replace('jpg', 'html').replace('extras', 'extra').replace('scans/', '');
+    } else {
+      iframeUrl = `http://magiccards.info/${set}/en/${mciNumber}.html`;
+    }
     // const canvas = this.prepareCanvas();
     return (
       <div className='card-inspector clearfix'>
