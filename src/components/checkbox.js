@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ManaSymbol from './manaSymbol';
+
 export default class Checkbox extends Component {
 
   handleClick = (color) => {
@@ -7,15 +8,20 @@ export default class Checkbox extends Component {
   }
 
   render() {
-    const border = (this.props.value ? '3px solid #efefef' : '3px solid black');
-    const boxShadow = (this.props.value ? 'inset 0 0 3px white' : 'none')
+    const { symbol, value, checked } = this.props
+    const border = checked ? '3px solid #efefef' : '3px solid black';
+    const boxShadow = checked ? 'inset 0 0 3px white' : 'none';
+
     return (
       <div
-        onClick={ (e) => this.handleClick(this.props.color) }
+        onClick={ (e) => this.handleClick( value ) }
         className='hover-highlighter hover-hands'
         style={Object.assign({}, style, { border, boxShadow })}
       >
-        <ManaSymbol symbol={this.props.colorCode} styles={{ width:'20px', height:'20px', margin: 0, boxShadow }} />
+        <ManaSymbol 
+          symbol={ symbol } 
+          styles={{ width:'20px', height:'20px', margin: 0, boxShadow }} 
+        />
       </div>
     )
   }

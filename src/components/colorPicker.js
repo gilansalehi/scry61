@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Checkbox from './checkbox';
 import ManaSymbol from './manaSymbol';
+import SearchRefiner from './searchRefiner';
 
 export default class ColorPicker extends Component {
   constructor(props) {
@@ -22,71 +23,24 @@ export default class ColorPicker extends Component {
   }
 
   render() {
-    const {colors, colorOptions} = this.props;
+    const { colors, colorOptions } = this.props;
     return (
       <div>
-      <label>
-        <span style={style.span}>Color:</span>
-        <ul className='colors' style={style.ul}>
-          <li style={style.li}><Checkbox value={colors.includes('White')} handleClick={ (color) => this.handleClick(color) } colorCode='W' color='White'/></li>
-          <li style={style.li}><Checkbox value={colors.includes('Blue')}  handleClick={ (color) => this.handleClick(color) } colorCode='U' color='Blue' /></li>
-          <li style={style.li}><Checkbox value={colors.includes('Black')} handleClick={ (color) => this.handleClick(color) } colorCode='B' color='Black'/></li>
-          <li style={style.li}><Checkbox value={colors.includes('Red')}   handleClick={ (color) => this.handleClick(color) } colorCode='R' color='Red'  /></li>
-          <li style={style.li}><Checkbox value={colors.includes('Green')} handleClick={ (color) => this.handleClick(color) } colorCode='G' color='Green'/></li>
-        </ul>
-        <span className='expando hover-hands' onClick={ this.expand }>{ this.state.hidden ? '▾' : '▴'}</span>
-      </label>
+        <div className='main-options'>
+          <label>
+            <span style={style.span}>Color:</span>
+            <ul className='colors' style={style.ul}>
+              <li style={style.li}><Checkbox checked={colors.includes('White')} handleClick={ (color) => this.handleClick(color) } symbol='W' value='White'/></li>
+              <li style={style.li}><Checkbox checked={colors.includes('Blue')}  handleClick={ (color) => this.handleClick(color) } symbol='U' value='Blue' /></li>
+              <li style={style.li}><Checkbox checked={colors.includes('Black')} handleClick={ (color) => this.handleClick(color) } symbol='B' value='Black'/></li>
+              <li style={style.li}><Checkbox checked={colors.includes('Red')}   handleClick={ (color) => this.handleClick(color) } symbol='R' value='Red'  /></li>
+              <li style={style.li}><Checkbox checked={colors.includes('Green')} handleClick={ (color) => this.handleClick(color) } symbol='G' value='Green'/></li>
+            </ul>
+          </label>
+          <span className='expando hover-hands' onClick={ this.expand }>{ this.state.hidden ? '▾' : '▴'}</span>
+      </div>
       <div className='more-options' style={ this.state.hidden ? style.hidden : style.expando }>
-        <ul style={style.ul}>
-          <li style={style.li2}>
-            <Checkbox value={ colorOptions === 'AND' }
-              handleClick={ (opt) => this.updateOptions(opt) }
-              color='AND'
-              colorCode={ colorOptions === 'AND' ? '✔' : '-' }
-            />
-            <span> AND</span>
-          </li>
-          <li style={style.li2}>
-            <Checkbox value={ colorOptions === 'OR' }
-              handleClick={ (opt) => this.updateOptions(opt) }
-              color='OR'
-              colorCode={ colorOptions === 'OR' ? '✔' : '-' }
-            />
-            <span> OR</span>
-          </li>
-          <li style={style.li2}>
-            <Checkbox value={ colorOptions === 'NOT' }
-              handleClick={ (opt) => this.updateOptions(opt) }
-              color='NOT'
-              colorCode={ colorOptions === 'NOT' ? '✔' : '-' }
-            />
-            <span> NOT</span>
-          </li>
-          <li style={style.li2}>
-            <Checkbox value={ colorOptions === 'EXACTLY' }
-              handleClick={ (opt) => this.updateOptions(opt) }
-              color='EXACTLY'
-              colorCode={ colorOptions === 'EXACTLY' ? '✔' : '-' }
-            />
-            <span> EXACTLY</span>
-          </li>
-          <li style={style.li2}>
-            <Checkbox value={ colorOptions === 'ONLY' }
-              handleClick={ (opt) => this.updateOptions(opt) }
-              color='ONLY'
-              colorCode={ colorOptions === 'ONLY' ? '✔' : '-' }
-            />
-            <span> ONLY</span>
-          </li>
-          <li style={style.li2}>
-            <Checkbox value={ colorOptions === 'EXCLUDE_UNSELECTED' }
-              handleClick={ (opt) => this.updateOptions(opt) }
-              color='EXCLUDE_UNSELECTED'
-              colorCode={ colorOptions === 'EXCLUDE_UNSELECTED' ? '✔' : '-' }
-            />
-            <span> EXCLUDE UNSELECTED</span>
-          </li>
-        </ul>
+        <SearchRefiner updateOptions={ this.updateOptions } reference={ colorOptions } />
       </div>
       </div>
     );

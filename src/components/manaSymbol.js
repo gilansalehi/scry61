@@ -63,6 +63,14 @@ export default class ManaSymbol extends Component {
         case 'Rare':        return 'https://cdn4.iconfinder.com/data/icons/free-social-media-icons/16/Yellow_button.png';
         case 'Mythic Rare': return 'https://cdn4.iconfinder.com/data/icons/free-social-media-icons/16/Orange_button.png';
         case 'Special':     return 'https://magidex.com/extstatic/symbol/set/TSP/s.svg';
+        // type symbols
+        case 'Artifact':      return 'assets/type_artifact.svg';
+        case 'Creature':      return 'assets/type_creature.svg';
+        case 'Enchantment':   return 'assets/type_enchantment.svg';
+        case 'Land':          return 'assets/type_land.svg';
+        case 'Instant':       return 'assets/type_instant.svg';
+        case 'Planeswalker':  return 'assets/type_planeswalker.svg';
+        case 'Sorcery':       return 'assets/type_sorcery.svg';
         default: return false;
       }
     };

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Checkbox from './checkbox';
 import ManaSymbol from './manaSymbol';
+import SearchRefiner from './searchRefiner';
 
 export default class RarityPicker extends Component {
   constructor(props) {
@@ -23,42 +24,29 @@ export default class RarityPicker extends Component {
     const boxes = boxOptions.map((opt, i) => {
       return (
         <li style={style.li} key={i} title={opt}>
-          <Checkbox value={current.includes(opt)}
+          <Checkbox 
+            checked={ current.includes(opt) }
             handleClick={ (opt) => this.props.handleClick(opt) }
-            colorCode={ opt }
-            color={ opt }
+            symbol={ opt }
+            value={ opt }
           />
         </li>
       );
     });
 
-    const advancedOptions = ['AND', 'OR', 'NOT', 'EXACTLY', 'ONLY', 'EXCLUDE UNSELECTED'];
-    const advancedBoxes = advancedOptions.map((opt, i) => {
-      return (
-        <li style={style.li2} key={i}>
-          <Checkbox value={ options === opt }
-            handleClick={ (opt) => this.props.updateOptions(opt) }
-            color={ opt }
-            colorCode={ options === opt ? '✔' : '-' }
-          />
-          <span>{ ' ' + opt }</span>
-        </li>
-      )
-    });
-
     return (
       <div>
-        <label>
-          <span style={style.span}>Rarity:</span>
-          <ul className='colors' style={style.ul}>
-            { boxes }
-          </ul>
+        <div className='main-options'>
+          <label>
+            <span style={style.span}>Rarity:</span>
+            <ul className='colors' style={style.ul}>
+              { boxes }
+            </ul>
+          </label>
           <span className='expando hover-hands' onClick={ this.expand }>{ this.state.hidden ? '▾' : '▴'}</span>
-        </label>
+        </div>
         <div className='more-options' style={ this.state.hidden ? style.hidden : style.expando }>
-          <ul style={style.ul}>
-            { advancedBoxes }
-          </ul>
+          <SearchRefiner updateOptions={ this.updateOptions } reference={ options } />
         </div>
       </div>
     );

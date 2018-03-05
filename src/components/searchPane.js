@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Checkbox from './checkbox';
 import ColorPicker from './colorPicker';
+import TypePicker from './typePicker';
 import MultiSelect from './reactmultiselect/multiselect';
 import Button from './button';
 import RangeSetter from './rangeSetter';
@@ -19,6 +19,8 @@ export default class Search extends Component {
       rarity: [],
       rarityOptions: 'OR',
       cardType: '',
+      cardSuperTypes: [],
+      cardSuperTypeOptions: 'OR',
       cardText: '',
       format: '',
       cmc: {min: NaN, max: NaN},
@@ -70,6 +72,37 @@ export default class Search extends Component {
       ...this.props.filters,
       byType: card => card.type.toLowerCase().indexOf(cardType) !== -1,
     });
+  }
+
+  updateCardSuperTypes = superType => {
+    const { cardSuperTypes, cardSuperTypeOptions } = this.state;
+    const newSuperTypes = cardSuperTypes.includes(superType) 
+      ? cardSuperTypes.filter(st => st !== superType) 
+      : cardSuperTypes.concat([superType]);
+    this.setState({ cardSuperTypes: newSuperTypes });
+
+    this.updateSuperTypeFilters(newSuperTypes, cardSuperTypeOptions);
+  }
+
+  updateSuperTypeFilters = (newSuperTypes, cardSuperTypeOptions) => {
+    const superTypeFuncs = {
+      'AND': card => newSuperTypes.reduce((memo, target) => memo && card.types.includes(target), true),
+      'OR': card => newSuperTypes.reduce((memo, target) => memo || card.types.includes(target), false),
+      'NOT': card => newSuperTypes.reduce((memo, target) => memo && !card.types.includes(target), true),
+      'EXACTLY': card => new Set([card.types.length, newSuperTypes.length, new Set(card.types.concat(newSuperTypes)).size]).size === 1,
+      'ONLY': card => card.types.length && card.types.reduce((memo, SuperType) => memo && newSuperTypes.includes(SuperType), true),
+      'EXCLUDE_UNSELECTED': card => card.types.reduce((memo, SuperType) => memo && newSuperTypes.includes(SuperType), true),
+      'ANY': card => true,
+      'TYPELESS': card => card.types.length === 0,
+    };
+    const bySuperType = newSuperTypes.length || cardSuperTypeOptions === 'EXACTLY' ? superTypeFuncs[cardSuperTypeOptions] : superTypeFuncs['ANY'];
+
+    this.props.updateFilters({ ...this.props.filters, bySuperType });
+  }
+
+  updateSuperTypeOptions = (value) => {
+    this.setState({ cardSuperTypeOptions: value });
+    this.updateSuperTypeFilters(this.state.cardSuperTypes, value);
   }
 
   updateColors = (color) => {
@@ -159,10 +192,23 @@ export default class Search extends Component {
   }
 
   render() {
-    const { cardName, colors, colorOptions, cardType, cardText, cmc, power, toughness } = this.state;
+    const { 
+      cardName, 
+      colors, 
+      colorOptions, 
+      cardType, 
+      cardSuperTypes, 
+      cardSuperTypeOptions, 
+      cardText, 
+      cmc, 
+      power, 
+      toughness 
+    } = this.state;
     const cmcStyle = Object.assign({}, style.input, {width:'30px'});
+
     return (
       <div className='search-pane clearfix'>
+        <div className="search-header"> SEARCH </div>
         <label className='search-label'>
           <span style={style.span}>Name:</span>
           <Debouncer ref={self => this.kids.cardNameInput = self}
@@ -176,14 +222,15 @@ export default class Search extends Component {
           colors={ colors }
           colorOptions={ colorOptions }
         />
-        <label className='search-label'>
-          <span style={style.span}>Type:</span>
-          <Debouncer ref={self => this.kids.cardTypeInput = self}
-            value={cardType}
-            changed={e => this.updateCardTypeField(e)}
-            style={style.input}
+        <TypePicker
+          refCallback={self => this.kids.cardTypeInput = self}
+          inputValue={ cardType }
+          changed={e => this.updateCardTypeField(e) }
+          updateTypes={ this.updateCardSuperTypes }
+          updateOptions={ this.updateSuperTypeOptions }
+          types={ cardSuperTypes }
+          typeOptions={ cardSuperTypeOptions }
           />
-        </label>
         <label className='search-label'>
           <span style={style.span}>Text:</span>
           <Debouncer ref={self => this.kids.cardTextInput = self}

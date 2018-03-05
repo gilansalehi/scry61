@@ -225,7 +225,7 @@ class App extends Component {
         <div className="App-header">
           Scry61
         </div>
-        <div className="App-intro">
+        <div className="App-intro App-body">
           <Search
             toggleShow={ this.toggleShow }
             displayed={ show.search }
