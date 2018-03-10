@@ -1,0 +1,12 @@
+.deck-pane {
+  display: block;
+  float: right;
+  width: 400px;
+  justify-content: flex-start;
+  padding: 10px;
+  height: 100%;
+  flex-shrink: 0;
+  flex-grow: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}

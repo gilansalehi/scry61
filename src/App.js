@@ -5,7 +5,7 @@ import Search from './components/searchPane';
 import Deck from './components/deckPane';
 import Modal from './components/modalPane';
 import Spinner from './components/spinner';
-import fetchAllSets from './utils/SetFetcher';
+import fetchAllSets, { fetchASet } from './utils/SetFetcher';
 
 class App extends Component {
   constructor(props) {

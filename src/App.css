@@ -3,21 +3,11 @@
 @import 'css/spinner.css';
 @import 'css/search.css';
 @import 'css/results.css';
+@import 'css/card.css';
 
 .colors li {
   display: inline-block;
   padding-right: 10px;
-}
-
-.card-image {
-  background-image: url('https://upload.wikimedia.org/wikipedia/en/a/aa/Magic_the_gathering-card_back.jpg');
-  background-size: 150px 225px;
-  overflow: hidden;
-}
-
-.card-mana-cost {
-  white-space: nowrap;
-  overflow-x: visible;
 }
 
 .dropdown-hider {
@@ -28,10 +18,6 @@
   height: 100%;
   background: transparent;
   z-index: 50;
-}
-
-.dropdown-collapsed {
-
 }
 
 .dropdown {
@@ -79,7 +65,8 @@
 .search-results {
   display: block;
   float: left;
-  width: calc(100% - 730px);
+  flex-shrink: 1;
+  flex-grow: 1;
 }
 
 .results-list {
@@ -93,6 +80,8 @@
   justify-content: flex-start;
   padding: 10px;
   height: 100%;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .pending {

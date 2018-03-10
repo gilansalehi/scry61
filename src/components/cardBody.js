@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ManaSymbol from './manaSymbol';
-import CardImage from './cardImage';
 import SetPicker from './setPicker';
 import Button from './button';
 
@@ -40,8 +39,8 @@ export default class CardBody extends Component {
   }
 
   setPrinting = (p) => {
-    const newState = { printing: p, showSetPicker: false };
-    this.setState(newState);
+    this.setState({ showSetPicker: false });
+    this.props.setPrinting(p);
   }
 
   showPicker = () => {
@@ -52,20 +51,16 @@ export default class CardBody extends Component {
   }
 
   render() {
-    const { data: { name, type, text, power, toughness, colors, sets, printings }, showImage} = this.props;
-    const { printing, showSetPicker } = this.state;
+    const { data: { name, type, text, power, toughness, colors, sets, printings }, printing } = this.props;
+    const { showSetPicker } = this.state;
     const pt = power !== undefined && toughness !== undefined ? [power, toughness].join('/') : '';
     const style = Object.assign({}, cardStyle, this.props.cardStyle);
     const decoratedText = this.parseSymbols(text);
-    const image = <CardImage card={this.props.data} printing={printing} />;
     const setPicker = <SetPicker card={this.props.data} setPrinting={this.setPrinting} hide={this.hidePicker}/>;
     const setStyle = Object.assign({}, cardStyle.set, { color: this.mapRarityToColor(printing.rarity) });
 
     return (
       <div className='card-body clearfix' style={style.body}>
-        <div className='card-image-container' style={style.image}>
-          { showImage && image }
-        </div>
         <div className='card-divider'>
           <div className='card-types' style={{display:'inline-block', textAlign:'center'}}>{ type }</div>
           <div className='card-set hover-hands' style={setStyle} onClick={this.showPicker}>

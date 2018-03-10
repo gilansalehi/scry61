@@ -12,7 +12,8 @@ export default class Results extends Component {
     this.state = {
       page: 0,
       pageSize: 50,
-      cardView: 'EXPANDED',
+      cardView: 'ALL',
+      imgSize: 200,
       moreOptions: false,
       sorts: {},
     };
@@ -22,13 +23,19 @@ export default class Results extends Component {
     this.props.cards.length !== nextProps.cards.length && this.setPage(0);
   }
 
-  applySorts = () => {
-
+  incrementImgSize = () => {
+    const imgSize = Math.min(300, this.state.imgSize + 10);
+    this.setState({ imgSize });
   }
 
-  prepareResults = (showImg) => {
+  decrementImgSize = () => {
+    const imgSize = Math.max(150, this.state.imgSize - 10);
+    this.setState({ imgSize });
+  }
+
+  prepareResults = () => {
     const {cards, addToDeck, removeFromDeck} = this.props;
-    const {page, pageSize, cardView} = this.state;
+    const {page, pageSize, cardView, imgSize } = this.state;
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
     const [start, end] = [currentPage*pageSize, (currentPage + 1)*pageSize];
@@ -42,9 +49,9 @@ export default class Results extends Component {
           <CardDisplayer key={c.name}
             style={customStyle}
             data={c}
-            showImage={showImg}
             showSet={true}
-            collapsed={ cardView === 'COLLAPSED' }
+            cardView={ cardView }
+            imgSize={ imgSize }
             addToDeck={ addToDeck }
             removeFromDeck={ removeFromDeck }
           />
@@ -74,20 +81,25 @@ export default class Results extends Component {
   }
 
   render() {
-    const { page, pageSize, moreOptions } = this.state;
+    const { page, pageSize, moreOptions, cardView } = this.state;
     const { sort, sortDir, updateSorts, cards, show: { search, deck } } = this.props;
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
-    const width = window.innerWidth - (deck ? 400 : 50) - (search ? 350 : 0) - 20;
-    const showImg = width > 600;
-    const height = window.innerHeight - 160;
-    const results = this.prepareResults(showImg);
-    const resultsStyle = Object.assign({}, { width });
-    const sortsMenu = <ViewOptions sort={sort} sortDir={sortDir} updateSorts={updateSorts} setDefaultCardView={this.setDefaultCardView} />;
+    const results = this.prepareResults(true);
+    const sortsMenu = (
+      <ViewOptions 
+        sort={sort} 
+        sortDir={sortDir}
+        updateSorts={updateSorts}
+        setDefaultCardView={this.setDefaultCardView}
+        incrementImgSize={this.incrementImgSize}
+        decrementImgSize={this.decrementImgSize}
+      />
+    );
 
     return (
-      <div className='search-results clearfix' style={resultsStyle}>
-        <div className='results-info' style={infoStyle}>
+      <div className={`search-results clearfix results-view--${cardView.toLowerCase()}`}>
+        <div className='results-info'>
           <span> Results: { cards.length } |
             Per Page: <input value={ pageSize } onChange={(e) => this.setPageSize(e)} style={inputStyle} />
           </span>
@@ -99,7 +111,7 @@ export default class Results extends Component {
         <div>
           { moreOptions && sortsMenu }
         </div>
-        <ul className='results-list' style={{ height }}>
+        <ul className='results-list' >
           { results }
         </ul>
         <div className='results-info' style={infoStyle}>

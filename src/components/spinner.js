@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 export default class Spinner extends Component {
   render() {
     return (
+      <div className="spinner-container">
       <div className="pending" style={style}>
         <div>Loading Card Data...</div>
         <div className="sk-folding-cube">
@@ -12,6 +13,7 @@ export default class Spinner extends Component {
           <div className="sk-cube3 sk-cube"></div>
         </div>
       </div>
+      </div>
     );
   }
 }
@@ -20,4 +22,5 @@ const style = {
   color: 'white',
   textAlign: 'center',
   fontFamily: '"Cinzel", cursive',
+  width: '100%',
 }

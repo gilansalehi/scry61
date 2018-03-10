@@ -10,6 +10,7 @@ label {
   display: block;
   float: left;
   width: 340px;
+  min-width: 340px;
   justify-content: flex-start;
   padding: 10px;
   height: 100%;
@@ -17,6 +18,8 @@ label {
   text-transform: uppercase;
   font-family: 'Cinzel', serif;
   box-sizing: border-box;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 

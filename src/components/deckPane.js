@@ -63,7 +63,7 @@ export default class Deck extends Component {
                 <CardDisplayer key={c.name}
                   cardStyle={{ border: { width: '300px', display: 'inline-block'} }}
                   cardCount={ c.cardCount }
-                  showImage={false}
+                  view={ 'COLLAPSED' }
                   data={c}
                   collapsed={ true }
                   addToDeck={ addToDeck }

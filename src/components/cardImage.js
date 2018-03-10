@@ -1,7 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import CardInspector from './cardInspector';
 
 export default class CardImage extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      error: false,
+    };
+  }
 
   mapSetToCode = (printing) => {
     switch (printing.set) {
@@ -80,33 +88,33 @@ export default class CardImage extends Component {
 
   mapVanguardToImgPath = (name) => {
     var pathData = {};
-    ['ashnod', 'barrin', 'crovax', 'aladamri', 'ertai', 'gerrard', 'greven-il-vec',
-    'hanna', 'hells-caretaker', 'jaya-ballard', 'karn', 'lyna'].forEach(c => {
-      pathData[c] = `http://magiccards.info/extras/other/vanguard/${c}.jpg`
-    });
-    ['eladamri-lord-of-leaves', 'gix', 'hells-caretaker', 'jaya-ballard-task-mage',
-    'serra-angel', 'maraxus', 'mirri', 'mishra', 'multani', 'oracle', 'orim',
-    'rofellos', 'selenia', 'serra', 'sidar-kondo', 'sisay', 'squee',
-    'sliver-queen-brood-mother', 'starke', 'tahngarth', 'takara', 'tawnos',
-    'titania', 'xantcha', 'urza', 'volrath'].forEach(c => {
-      pathData[c] = `http://magiccards.info/extras/other/vanguard-mtgo/${c}.jpg`
-    });
+    `ashnod barrin crovax aladamri ertai gerrard greven-il-vec
+      hanna hells-caretaker jaya-ballard karn lyna`.split(' ').forEach(c => {
+        pathData[c] = `http://magiccards.info/extras/other/vanguard/${c}.jpg`
+      });
+    `eladamri-lord-of-leaves gix hells-caretaker jaya-ballard-task-mage
+      serra-angel maraxus mirri mishra multani oracle orim
+      rofellos selenia serra sidar-kondo sisay squee
+      sliver-queen-brood-mother starke tahngarth takara tawnos
+      titania xantcha urza volrath`.split(' ').forEach(c => {
+        pathData[c] = `http://magiccards.info/extras/other/vanguard-mtgo/${c}.jpg`
+      });
     return pathData[name] ? pathData[name] : `http://magiccards.info/extras/other/vanguard-mtgo-2/${name}.jpg`;
   }
 
   calculateImagePath = (card, printing) => {
     const hyphenize = name => name.toLowerCase().replace(/(,|\?)/g, '').replace(/([^a-z])/g, '-');
-    if ( card.type === 'Scheme' ) {
+    if (card.type === 'Scheme') {
       const schemeName = hyphenize(card.name);
       return `http://magiccards.info/extras/scheme/archenemy/${schemeName}.jpg`
-    } else if ( card.types[0] === 'Plane' ) {
+    } else if (card.types[0] === 'Plane') {
       const planeName = hyphenize(card.name);
       return `http://magiccards.info/extras/plane/planechase-anthology/${planeName}.jpg`
-    } else if ( card.type === 'Vanguard' ) {
+    } else if (card.type === 'Vanguard') {
       const vanguardName = hyphenize(card.name.toLowerCase().replace("'", '').replace(' avatar', ''));
       return this.mapVanguardToImgPath(vanguardName);
-    } else if ( printing.mciNumber ) {
-      if ( printing.set === 'pPRE' ) { return cardBackImagePath; }
+    } else if (printing.mciNumber) {
+      if (printing.set === 'pPRE') { return cardBackImagePath; }
       const set = printing.mciSetCode || this.mapSetToCode(printing);
       const mci = this.mapStringToMCI(printing.mciNumber);
       return mci !== undefined ? `http://magiccards.info/scans/en/${set}/${mci}.jpg` : cardBackImagePath;
@@ -123,22 +131,27 @@ export default class CardImage extends Component {
   }
 
   openCardInspector = () => {
-    const {card, printing} = this.props;
+    const { card, printing } = this.props;
     const imageUrl = this.calculateImagePath(card, printing);
     const cardInspector = <CardInspector card={card} imageUrl={imageUrl} key={1} />;
     this.context.showModal([cardInspector]);
   }
 
+  handleError = () => {
+    this.setState({ error: true });
+  }
+
   render() {
     const { card, printing } = this.props;
-    let sourcePath = this.calculateImagePath(card, printing);
+    let sourcePath = this.state.error ? cardBackImagePath : this.calculateImagePath(card, printing);
 
     return (
       <img className='card-image'
         onClick={this.openCardInspector}
+        onError={this.handleError}
         src={sourcePath}
-        style={imgStyle}
-        alt={''}
+        alt={card.name}
+        title={card.name}
       />
     )
   }
@@ -146,14 +159,6 @@ export default class CardImage extends Component {
 
 CardImage.contextTypes = {
   showModal: React.PropTypes.func,
-}
-
-const imgStyle = {
-  display: 'inline-block',
-  width: '150px',
-  height: '225px',
-  margin: '-25px 10px -5px 0',
-  border: '5px solid #222',
 }
 
 const cardBackImagePath = 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/0/07/Cardback_yellow.jpg?version=01d65cd077a35e9b245ad2a23c99b05e'

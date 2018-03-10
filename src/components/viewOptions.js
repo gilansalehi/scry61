@@ -34,8 +34,8 @@ export default class ViewOptions extends Component {
     })
 
     return (
-      <div className='view-options' style={containerStyle}>
-        <ul style={ulStyle}>
+      <div className='view-options inset'>
+        <ul className='view-options-ul'>
           <li style={liStyle} key={1}>
             <span key={1}> Sort: </span>
             <span key={2}>
@@ -47,8 +47,12 @@ export default class ViewOptions extends Component {
             </span>
           </li>
           <li style={liStyle} key={2}>
+            <span>View: </span>
             <Button handleClick={v => this.setDefaultCardView(v)} value='COLLAPSED' text='≡' />
             <Button handleClick={v => this.setDefaultCardView(v)} value='EXPANDED' text='⊟' />
+            <Button handleClick={v => this.setDefaultCardView(v)} value='IMAGE' text='C' />
+            <Button handleClick={v => this.props.decrementImgSize()} value='DEC' text='-' />
+            <Button handleClick={v => this.props.incrementImgSize()} value='INC' text='+' />
           </li>
         </ul>
       </div>
@@ -63,12 +67,6 @@ const openStyle = {
 
 const liStyle = {
   display: 'inline-block',
-};
-
-const ulStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: '100%',
 };
 
 const inactive = {
@@ -90,7 +88,6 @@ const containerStyle = {
   fontFamily: '"Cinzel", serif',
   display:'inline-block',
   position:'relative',
-  width: '100%',
   padding: '5px',
   color: 'white',
 };

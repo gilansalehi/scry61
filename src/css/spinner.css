@@ -87,3 +87,8 @@
     opacity: 0;
   }
 }
+
+.spinner-container {
+  position: relative;
+  width: 100%;
+}

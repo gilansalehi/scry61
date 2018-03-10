@@ -1,14 +1,18 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import CardHead from './cardHead';
 import CardBody from './cardBody';
 import CardActions from './cardActions';
+import CardImage from './cardImage';
 
 export default class CardDisplayer extends Component {
   constructor(props) {
     super(props);
 
+    const { printings } = this.props.data;
+
     this.state = {
-      expanded: !this.props.collapsed,
+      view: this.props.cardView,
+      printing: printings[0],
     };
   }
 
@@ -22,30 +26,43 @@ export default class CardDisplayer extends Component {
     this.props.removeFromDeck(data);
   }
 
-  toggleView = () => {
-    this.setState({ expanded: !this.state.expanded });
+  setPrinting = (p) => {
+    this.setState({ printing: p });
+  }
+
+  toggleView = (e) => {
+    const view = this.state.view === 'COLLAPSED' ? 'EXPANDED' : 'COLLAPSED';
+    this.setState({ view });
   }
 
   render() {
-    const { expanded } = this.state;
-    const { data, cardCount, cardStyle, showImage, showSet } = this.props;
-    const cardBody = () => { return (<CardBody data={data} cardStyle={cardStyle} showImage={showImage} showSet={showSet} />); };
+    const { view, printing } = this.state;
+    const { data, cardCount, cardStyle, showSet, imgSize } = this.props;
     const style = Object.assign({}, styles, this.props.style);
 
     return (
-      <div className='card-displayer'>
-        <div className='card-header-bar' style={style.header}>
-          <span className='card-count' style={style.countStyle}>{ cardCount }</span>
-          <CardHead data={ data } expanded={ expanded } cardStyle={ cardStyle }/>
-          <CardActions data={ data }
-            expanded={ expanded }
-            addToDeck={ this.addToDeck }
-            removeFromDeck={ this.removeFromDeck }
-            toggleView={ this.toggleView }
-          />
+      <div className={`card-displayer view--${view.toLowerCase()}`}>
+        <div className='card-image-container' style={{width: imgSize + 'px'}}>
+          <CardImage card={data} printing={printing} />
         </div>
-        <div className='card-body-box'>
-          { expanded && cardBody() }
+        <div className='card-data-container'>
+          <div className='card-header-bar' style={style.header}>
+            <CardHead data={data} view={view} cardStyle={cardStyle} />
+            <CardActions data={data}
+              expanded={['EXPANDED', 'ALL'].includes(view)}
+              addToDeck={this.addToDeck}
+              removeFromDeck={this.removeFromDeck}
+              toggleView={this.toggleView}
+            />
+          </div>
+          <div className='card-body-box'>
+            <CardBody data={data}
+              cardStyle={cardStyle}
+              showSet={showSet}
+              setPrinting={this.setPrinting}
+              printing={printing}
+            />
+          </div>
         </div>
       </div>
     )
@@ -55,8 +72,8 @@ export default class CardDisplayer extends Component {
 const styles = {
   header: {
     width: '100%',
-    display:'flex',
-    justifyContent:'space-between',
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   countStyle: {
     float: 'left',
