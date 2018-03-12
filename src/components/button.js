@@ -9,8 +9,12 @@ export default class Button extends Component {
   render() {
     const style = Object.assign({}, buttonStyle, this.props.styles);
     return (
-      <span style={style} className='hover-highlighter hover-hands' onClick={ this.handleClick }>
-        { this.props.text }
+      <span style={style} 
+        className='hover-highlighter hover-hands' 
+        onClick={this.handleClick} 
+        title={this.props.title || ''}
+      >
+        {this.props.text}
       </span>
     )
   }

@@ -32,8 +32,8 @@ export default class CardHead extends Component {
 }
 
 const cardStyle = {
-  border: { display: 'inline-block', width: '350px', },
-  header: { width: '100%', height: '24px' },
+  border: { display: 'inline-block', width: '350px' },
+  header: { width: '100%', height: '24px', boxSizing: 'border-box' },
   title: { fontWeight: 'bold', lineHeight: '24px', float: 'left' },
   manaCost: {
     float: 'right',

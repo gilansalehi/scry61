@@ -7,8 +7,13 @@ export default class CardImage extends Component {
     super(props)
 
     this.state = {
+      loading: true,
       error: false,
     };
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({ error: false });
   }
 
   mapSetToCode = (printing) => {
@@ -138,16 +143,23 @@ export default class CardImage extends Component {
   }
 
   handleError = () => {
+    // maybe try next printing
     this.setState({ error: true });
   }
 
+  loadSuccess = () => {
+    // this.setState({ loading: false });
+  }
+
   render() {
+    const { loading, error } = this.state;
     const { card, printing } = this.props;
-    let sourcePath = this.state.error ? cardBackImagePath : this.calculateImagePath(card, printing);
+    let sourcePath = error ? cardBackImagePath : this.calculateImagePath(card, printing);
 
     return (
       <img className='card-image'
         onClick={this.openCardInspector}
+        onLoad={this.loadSuccess}
         onError={this.handleError}
         src={sourcePath}
         alt={card.name}

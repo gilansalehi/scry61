@@ -11,7 +11,7 @@ export default class CardDisplayer extends Component {
     const { printings } = this.props.data;
 
     this.state = {
-      view: this.props.cardView,
+      view: this.props.view,
       printing: printings[0],
     };
   }
@@ -26,8 +26,8 @@ export default class CardDisplayer extends Component {
     this.props.removeFromDeck(data);
   }
 
-  setPrinting = (p) => {
-    this.setState({ printing: p });
+  setPrinting = (printing) => {
+    this.setState({ printing });
   }
 
   toggleView = (e) => {
@@ -74,6 +74,7 @@ const styles = {
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
+    flexWrap: 'wrap-reverse',
   },
   countStyle: {
     float: 'left',

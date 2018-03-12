@@ -1,5 +1,5 @@
 .card-header {
-  padding: 0 0 0 10px;
+  padding: 0 10px;
 }
 
 .card-displayer {
@@ -12,6 +12,7 @@
   width: 200px;
   flex-shrink: 0;
   line-height: 0;
+  background: #888;
 }
 
 .card-data-container {

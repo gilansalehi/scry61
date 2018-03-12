@@ -48,11 +48,11 @@ export default class ViewOptions extends Component {
           </li>
           <li style={liStyle} key={2}>
             <span>View: </span>
-            <Button handleClick={v => this.setDefaultCardView(v)} value='COLLAPSED' text='≡' />
-            <Button handleClick={v => this.setDefaultCardView(v)} value='EXPANDED' text='⊟' />
-            <Button handleClick={v => this.setDefaultCardView(v)} value='IMAGE' text='C' />
-            <Button handleClick={v => this.props.decrementImgSize()} value='DEC' text='-' />
-            <Button handleClick={v => this.props.incrementImgSize()} value='INC' text='+' />
+            <Button handleClick={v => this.setDefaultCardView(v)} value='COLLAPSED' text='≡' title='Collapse All' />
+            <Button handleClick={v => this.setDefaultCardView(v)} value='EXPANDED' text='⊟' title='Expand All' />
+            <Button handleClick={v => this.setDefaultCardView(v)} value='IMAGE' text='C' title='Images Only' />
+            <Button handleClick={v => this.props.decrementImgSize()} value='DEC' text='-' title='Decrease Image Size' />
+            <Button handleClick={v => this.props.incrementImgSize()} value='INC' text='+' title='Incease Image Size' />
           </li>
         </ul>
       </div>

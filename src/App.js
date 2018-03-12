@@ -5,14 +5,19 @@ import Search from './components/searchPane';
 import Deck from './components/deckPane';
 import Modal from './components/modalPane';
 import Spinner from './components/spinner';
+import Nav from './components/nav';
+import Sidebar from './components/sidebar';
 import fetchAllSets, { fetchASet } from './utils/SetFetcher';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
+    const mobile = window.matchMedia('(max-width: 767px)');
+    const isMobile = mobile.matches;
+
     this.state = {
-      show: { search: true, results: true, deck: true, },
+      show: { search: true, results: !isMobile, deck: !isMobile, sidebar: false },
       cards: [],
       filters: {},
       sort: 'name',
@@ -27,17 +32,38 @@ class App extends Component {
   // STARTUP
   componentDidMount() {
     let self = this;
+    caches.match('/card-data.json')
+      .then(response => response.json())
+      .then(data => {
+        console.log('fetched card data from the cache');
+        this.setState({ cards: data, pending: false });
+      })
+      .catch(err => {
+        console.log('fetching card data from remote');
+        this.fetchSetsFromRemote();
+      });
+  }
+
+  fetchSetsFromRemote = (err) => {
+    const self = this;
     fetchAllSets().then(AllSets => {
       const AllCards = self.buildAllCards(AllSets);
       const dummy = { name: '', type: '', text: '', colors: [], cmc: 0, rarities: [], };
       const cards = Object.values(AllCards).filter(c => c.name).map(c => Object.assign({}, dummy, c));
+
+      const jsonResponse = new Response(JSON.stringify(cards), {
+        headers: { 'content-type': 'application/json' }
+      });
+      caches.open('scry61').then(cache => cache.put('/card-data.json', jsonResponse));
       self.setState({ cards, pending: false });
     });
+    console.timeEnd('fetchAllSets');
   }
 
   buildAllCards = (AllSets) => {
     let AllCards = {};
     AllSets.forEach(set => {
+      console.time(set.code);
       const { code, cards, type, releaseDate, magicCardsInfoCode } = set;
       const setName = set.name;
       cards.forEach(c => {
@@ -68,6 +94,7 @@ class App extends Component {
           rarity: c.rarity,
         });
       });
+      console.timeEnd(set.code);
     });
     return AllCards;
   }
@@ -88,17 +115,22 @@ class App extends Component {
       updateDeckName: self.updateDeckName,
       deckName: self.state.deckName,
       showModal: self.showModal,
+      setShow: self.setShow,
     }
   }
 
   // DISPLAY AND LAYOUT
+  setShow = (option) => {
+    this.setState({ show: { ...this.state.show, ...option } });
+  }
+
   toggleShow = (pane) => {
-    let { search, results, deck } = this.state.show;
+    let { search, results, deck, sidebar } = this.state.show;
     switch (pane) {
-      case 'SEARCH':  search  = !search;  this.setState({ show: { search, results, deck }}); break;
-      case 'DECK':    deck    = !deck;    this.setState({ show: { search, results, deck }}); break;
-      case 'RESULTS': results = !results; this.setState({ show: { search, results, deck }}); break;
-      default: this.setState({ show: { search: true, results: true, deck: true }});
+      case 'SEARCH': search = !search; this.setState({ show: { search, results, deck, sidebar } }); break;
+      case 'DECK': deck = !deck; this.setState({ show: { search, results, deck, sidebar } }); break;
+      case 'RESULTS': results = !results; this.setState({ show: { search, results, deck, sidebar } }); break;
+      default: this.setState({ show: { search: true, results: true, deck: true, sidebar: false } });
     }
   }
 
@@ -108,7 +140,7 @@ class App extends Component {
     const self = this;
     let filteredCards = cards;
     const results = Object.keys(filters).reduce((filteredCards, filterName) => {
-      if ( self.state.filters[filterName] ) {
+      if (self.state.filters[filterName]) {
         return filteredCards.filter(self.state.filters[filterName]);
       } else {
         return filteredCards;
@@ -124,7 +156,7 @@ class App extends Component {
     const intParser = (a, b) => {
       const x = isNaN(parseInt(a[sort])) ? -10 : parseInt(a[sort]);
       const y = isNaN(parseInt(b[sort])) ? -10 : parseInt(b[sort]);
-      return  x < y ? -dir : dir;
+      return x < y ? -dir : dir;
     };
     // default to alphabetical sort, remove cards without the desired attribute
     let preSort = cards.sort((a, b) => a.name < b.name ? -1 : 1).filter(a => a[sort] !== undefined);
@@ -157,7 +189,7 @@ class App extends Component {
 
   saveDeck = () => {
     const { deckName } = this.state;
-    if ( deckName ) {
+    if (deckName) {
       const Scry61 = window.localStorage;
       const deck = JSON.stringify(this.state.deck);
       Scry61.setItem(deckName, deck);
@@ -171,14 +203,14 @@ class App extends Component {
     const buttons = deckNames.map((name, i) => {
       return (
         <li key={i} className='hover-highlighter' onClick={() => this.importDeck(name)} style={buttonStyle}>
-          { name }
+          {name}
         </li>
       );
     });
     const children = (
-      <ul>{ buttons || 'No Saved Decks' }</ul>
+      <ul>{buttons || 'No Saved Decks'}</ul>
     );
-    this.setState({ modal: { show: true, children }});
+    this.setState({ modal: { show: true, children } });
   }
 
   importDeck = (name) => {
@@ -190,11 +222,11 @@ class App extends Component {
   }
 
   showModal = (children = []) => {
-    this.setState({ modal: { show: true, children }});
+    this.setState({ modal: { show: true, children } });
   }
 
   hideModal = () => {
-    this.setState({ modal: { show: false, children: [] }});
+    this.setState({ modal: { show: false, children: [] } });
   }
 
   updateDeckName = (e) => {
@@ -209,43 +241,45 @@ class App extends Component {
     const sortedCards = this.applySorts(filteredCards);
     const results = (
       <Results
-        show={ show }
-        addToDeck={ this.addToDeck }
-        removeFromDeck={ this.removeFromDeck }
-        updateSorts={ this.updateSorts }
-        sort={ sort }
-        sortDir={ sortDir }
-        cards={ sortedCards }
+        show={show.results}
+        addToDeck={this.addToDeck}
+        removeFromDeck={this.removeFromDeck}
+        updateSorts={this.updateSorts}
+        sort={sort}
+        sortDir={sortDir}
+        cards={sortedCards}
       />
     )
     const spinner = <Spinner />;
 
     return (
       <div className="App">
-        <div className="App-header">
-          Scry61
-        </div>
+        <Sidebar show={show} setShow={this.setShow} />
+        <Nav setShow={this.setShow} />
         <div className="App-intro App-body">
           <Search
-            toggleShow={ this.toggleShow }
-            displayed={ show.search }
-            updateFilters={ this.updateFilters }
-            filters={ filters }
+            show={show.search}
+            setShow={this.setShow}
+            toggleShow={this.toggleShow}
+            displayed={show.search}
+            updateFilters={this.updateFilters}
+            filters={filters}
           />
-          { pending ? spinner : results }
+          {pending ? spinner : results}
           <Deck
-            toggleShow={ this.toggleShow }
-            displayed={ show.deck }
-            loadDeck={ this.loadDeck }
-            saveDeck={ this.saveDeck }
-            addToDeck={ this.addToDeck }
-            removeFromDeck={ this.removeFromDeck }
-            cards={ deck }
+            show={show.deck}
+            toggleShow={this.toggleShow}
+            displayed={show.deck}
+            loadDeck={this.loadDeck}
+            saveDeck={this.saveDeck}
+            addToDeck={this.addToDeck}
+            removeFromDeck={this.removeFromDeck}
+            cards={deck}
           />
         </div>
-        <div className={ modal.show ? 'modal-region' : 'hidden' }>
-          <Modal hideModal={ this.hideModal }>
-            { modal.children }
+        <div className={modal.show ? 'modal-region' : 'hidden'}>
+          <Modal hideModal={this.hideModal}>
+            {modal.children}
           </Modal>
         </div>
       </div>
@@ -257,6 +291,7 @@ App.childContextTypes = {
   updateDeckName: React.PropTypes.func,
   deckName: React.PropTypes.string,
   showModal: React.PropTypes.func,
+  setShow: React.PropTypes.func,
 };
 
 const buttonStyle = {
@@ -268,13 +303,13 @@ const buttonStyle = {
   lineHeight: '21px',
 };
 
-const debounce = function(func, delay) {
+const debounce = function (func, delay) {
   var inDebounce = undefined;
-  return function() {
+  return function () {
     var context = this,
       args = arguments;
     clearTimeout(inDebounce);
-    return inDebounce = setTimeout(function() {
+    return inDebounce = setTimeout(function () {
       return func.apply(context, args);
     }, delay);
   }

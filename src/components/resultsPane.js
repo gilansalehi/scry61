@@ -24,12 +24,12 @@ export default class Results extends Component {
   }
 
   incrementImgSize = () => {
-    const imgSize = Math.min(300, this.state.imgSize + 10);
+    const imgSize = Math.min(300, this.state.imgSize + 25);
     this.setState({ imgSize });
   }
 
   decrementImgSize = () => {
-    const imgSize = Math.max(150, this.state.imgSize - 10);
+    const imgSize = Math.max(150, this.state.imgSize - 25);
     this.setState({ imgSize });
   }
 
@@ -50,7 +50,7 @@ export default class Results extends Component {
             style={customStyle}
             data={c}
             showSet={true}
-            cardView={ cardView }
+            view={ cardView }
             imgSize={ imgSize }
             addToDeck={ addToDeck }
             removeFromDeck={ removeFromDeck }
@@ -82,7 +82,10 @@ export default class Results extends Component {
 
   render() {
     const { page, pageSize, moreOptions, cardView } = this.state;
-    const { sort, sortDir, updateSorts, cards, show: { search, deck } } = this.props;
+    const { sort, sortDir, updateSorts, cards, show } = this.props;
+
+    if ( !show ) { return (<div className="hidden"></div>); }
+
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
     const results = this.prepareResults(true);

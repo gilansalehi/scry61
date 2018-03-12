@@ -1,8 +1,8 @@
 export default function fetchAllSets() {
-  return fetch('https://mtgjson.com/json/SetCodes.json')
+  return fetch('https://mtgjson.com/json/SetCodes.json', { cache: 'default' })
     .then(response => response.json())
     .then(setCodes => setCodes.map(code => {
-      return fetch(`https://mtgjson.com/json/${code}.json`)
+      return fetch(`https://mtgjson.com/json/${code}.json`, { cache: 'default' })
         .then(response => response.json());
     })
     )

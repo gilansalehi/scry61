@@ -1,9 +1,10 @@
 @import 'css/reset.css';
-@import 'css/main.css';
 @import 'css/spinner.css';
 @import 'css/search.css';
 @import 'css/results.css';
 @import 'css/card.css';
+@import 'css/deck.css';
+@import 'css/main.css';
 
 .colors li {
   display: inline-block;
@@ -28,6 +29,10 @@
   background: #333;
   border: 1px solid #666;
   right: 0;
+}
+
+.dark-window {
+  background: rgba(0, 0, 0, .5);
 }
 
 .dropdown > li:hover {
@@ -73,17 +78,6 @@
   overflow-y: scroll;
 }
 
-.deck-pane {
-  display: block;
-  float: right;
-  width: 400px;
-  justify-content: flex-start;
-  padding: 10px;
-  height: 100%;
-  flex-shrink: 0;
-  flex-grow: 0;
-}
-
 .pending {
   position: absolute;
   top: 25%;
@@ -93,6 +87,19 @@
   text-transform: uppercase;
   font-family: 'Cinzel', serif;
 }
+
+.hidden {
+  display: none;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
 
 
 @media screen and (max-width: 767px) {

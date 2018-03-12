@@ -192,6 +192,8 @@ export default class Search extends Component {
   }
 
   render() {
+    if ( !this.props.show ) { return (<div className='search-pane--hidden'></div>); }
+
     const { 
       cardName, 
       colors, 
@@ -286,6 +288,9 @@ export default class Search extends Component {
         </label>
         <label className='search-label'>
           <Button handleClick={this.clearAll} text='CLEAR ALL' styles={style.button} />
+        </label>
+        <label className='search-label mobile-only'>
+          <Button handleClick={e => this.props.setShow({ search: false, results: true })} text='SEE RESULTS' styles={style.button} />
         </label>
       </div>
     );

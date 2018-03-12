@@ -92,7 +92,10 @@ export default class Deck extends Component {
   }
 
   render() {
-    const { cards, saveDeck, loadDeck, displayed } = this.props;
+    const { cards, saveDeck, loadDeck, displayed, show } = this.props;
+
+    if ( !show ) { return (<div className="deck-pane hidden"></div>); }
+
     const list = cards.length ? this.prepareList(cards) : this.showTips();
     const display = displayed ? 'inline-block' : 'none';
     const deckPaneStyle = Object.assign({}, { display });

@@ -2,15 +2,49 @@
   text-align: center;
 }
 
-.App-header {
+.App-header-nav {
   background-color: #222;
   padding: 5px;
   color: white;
   font-family: 'Cinzel Decorative', cursive;
-  font-size: 50px;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  align-items: baseline;
+}
+
+.App-header-nav li {
+  flex-basis: 33%;
+  flex-shrink: 1;
+  flex-grow: 1;
+  display: flex;
+}
+
+.App-header-nav--one {
+  justify-content: flex-start;
+}
+
+.App-header-nav--three {
+  justify-content: flex-end;
+}
+
+.App-header h1 {
+  font-size: 50px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.nav-menu {
+  margin: 0 10px;
+}
+
+.nav-menu svg {
+  fill: #ccc;
+}
+
+.nav-menu:hover svg {
+  fill: white;
 }
 
 .App-intro {
@@ -31,9 +65,60 @@
   font-size: 16px;
 }
 
+.sidebar {
+  position: fixed;
+  z-index: 100;
+}
+
+.sidebar-list {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  margin: 0;
+  width: 300px;
+  background: #333;
+  z-index: 100;
+  transition: margin-left .1s ease-in-out;
+}
+
+.sidebar-list.slide-out {
+  margin-left: -300px;
+}
+
+.sidebar-list.slide-in {
+  margin-left: 0;
+}
+
+.sidebar-list li {
+  padding: 10px 20px;
+  color: white;
+  background-color: #444;
+  border-bottom: 1px solid #222;
+  font-family: "Cinzel", serif;
+}
+
+.sidebar-list li:hover {
+  background-color: #666;
+  box-shadow: inset 0 0 3px #222;
+}
+
+.mobile-only {
+  display: none;
+}
+
 @media screen and (max-width: 767px) {
   .App-body {
     flex-direction: column;
   }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
 }
 

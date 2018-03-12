@@ -10,3 +10,8 @@
   max-width: 100%;
   box-sizing: border-box;
 }
+
+
+.deck-pane .card-image-container {
+  display: none;
+}
