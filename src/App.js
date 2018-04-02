@@ -175,30 +175,29 @@ class App extends Component {
   updateSorts = ({ sort, sortDir }) => this.setState({ sort, sortDir })
 
   //DECK ACTIONS
-  addToDeck = (card) => {
-    const mainboard = this.state.deck.mainboard.concat([Object.assign({}, card)]);
-    this.setState({ deck: { ...this.state.deck, mainboard } });
+  addTo = (target, card) => {
+    const cards = this.state.deck[target].concat([{ ...card }]);
+    this.setState({ deck: { ...this.state.deck, [target]: cards } });
   }
 
-  addToMainboard = (card) => {
-    this.addToDeck(card);
+  removeFrom = (target, item) => {
+    const card = this.state.deck[target].find(c => c.name === item.name);
+    const cards = this.state.deck[target].filter(c => c !== card);
+    this.setState({ deck: { ...this.state.deck, [target]: cards }});
   }
 
-  addToSideboard = (card) => {
-    const sideboard = this.state.deck.sideboard.concat([{ ...card }])
-    this.setState({ deck: { ...this.state.deck, sideboard } });
-  }
-
-  removeFromDeck = (data) => {
-    const card = this.state.deck.mainboard.find(c => c.name === data.name);
-    const mainboard = this.state.deck.mainboard.filter(c => c !== card);
-    this.setState({ deck: { ...this.state.deck, mainboard } });
-  }
-
-  removeFromSideboard = (data) => {
-    const card = this.state.deck.sideboard.find(c => c.name === data.name);
-    const sideboard = this.state.deck.sideboard.find(c => c !== card);
-    this.setState({ deck: { ...this.state.deck, sideboard } });
+  moveTo = (destination, item) => {
+    const location = destination === 'mainboard' ? 'sideboard' : 'mainboard';
+    const card = this.state.deck[location].find(c => c.name === item.name);
+    const locationCards = this.state.deck[location].filter(c => c !== card);
+    const destinationCards = this.state.deck[destination].concat([{ ...card }]);
+    this.setState({ 
+      deck: { 
+        ...this.state.deck, 
+        [location]: locationCards, 
+        [destination]: destinationCards, 
+      }
+    });
   }
 
   saveDeck = () => {
@@ -256,8 +255,8 @@ class App extends Component {
     const results = (
       <Results
         show={show.results}
-        addToDeck={this.addToDeck}
-        removeFromDeck={this.removeFromDeck}
+        addTo={this.addTo}
+        removeFrom={this.removeFrom}
         updateSorts={this.updateSorts}
         sort={sort}
         sortDir={sortDir}
@@ -285,8 +284,9 @@ class App extends Component {
             toggleShow={this.toggleShow}
             loadDeck={this.loadDeck}
             saveDeck={this.saveDeck}
-            addToDeck={this.addToDeck}
-            removeFromDeck={this.removeFromDeck}
+            addTo={this.addTo}
+            removeFrom={this.removeFrom}
+            moveTo={this.moveTo}
             deck={deck}
           />
         </div>

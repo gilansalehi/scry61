@@ -18,16 +18,6 @@ export default class CardDisplayer extends Component {
     };
   }
 
-  addToDeck = () => {
-    const { data } = this.props;
-    this.props.addToDeck(data);
-  }
-
-  removeFromDeck = () => {
-    const { data } = this.props;
-    this.props.removeFromDeck(data);
-  }
-
   setPrinting = (printing) => {
     this.setState({ printing });
   }
@@ -39,7 +29,7 @@ export default class CardDisplayer extends Component {
 
   render() {
     const { view, printing } = this.state;
-    const { data, cardCount, cardStyle, showSet, imgSize } = this.props;
+    const { data, cardCount, cardStyle, showSet, imgSize, addTo, removeFrom } = this.props;
     const style = Object.assign({}, styles, this.props.style);
     const image = (
       <Flipper size={imgSize}>
@@ -48,8 +38,8 @@ export default class CardDisplayer extends Component {
         </div>
         <CardActionsMenu data={data}
           expanded={['EXPANDED', 'ALL'].includes(view)}
-          addToDeck={this.addToDeck}
-          removeFromDeck={this.removeFromDeck}
+          addTo={addTo}
+          removeFrom={removeFrom}
           toggleView={this.toggleView}
         />
       </Flipper>

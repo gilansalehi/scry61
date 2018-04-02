@@ -7,57 +7,67 @@ export default class Deck extends Component {
 
   buildDeckObj = (cards) => {
     const cardTypes = 'Artifact Creature Enchantment Instant Land Sorcery Planeswalker'.split(' ');
-    let mainDeck = cardTypes.reduce((acc, item) => { 
+    let deck = cardTypes.reduce((acc, item) => { 
       acc[item] = []; 
       return acc; 
     }, {});
 
     cards.forEach((card, i) => {
       cardTypes.some((type, i) => {
-        if ( card.types.includes(type) ) { return mainDeck[type].push(card); }
+        if ( card.types.includes(type) ) { return deck[type].push(card); }
         return false;
       })
     });
 
-    return mainDeck;
+    return deck;
   }
 
-  prepareCategory = (cards) => {
-    const { addToDeck, removeFromDeck, addToSideboard, removeFromSideboard } = this.props;
+  prepareCategory = (location, cards) => {
+    const { addTo, removeFrom, moveTo } = this.props;
+    const destination = location === 'mainboard' ? 'sideboard' : 'mainboard';
     const byName = (a, b) => a.name < b.name ? -1 : 1;
-    const unique = (card, idx, self) => self.findIndex(c => c.name === card.name) === idx; // returns true if card is first instance with given name in array
+    const unique = (card, idx, self) => self.findIndex(c => c.name === card.name) === idx;
     return cards
       .sort(byName)
       .filter(unique)
       .map((c, i, self) => {
         return (
           <li key={i + c.name} className='deck-list__item clearfix'>
-            <span className="card-count">{ cards.filter(x => x.name === c.name).length }</span>
+            <div className="deck-list__item-info">
+              <span className="card-count">{ cards.filter(x => x.name === c.name).length }</span>
+              <div className="deck-list__item-actions">
+                <Button handleClick={v => addTo(location, v)} value={c} text={'+'} title='add' />
+                <Button handleClick={v => removeFrom(location, v)} value={c} text={'─'} title='remove' />
+                <Button handleClick={v => moveTo(destination, v)} value={c} text={destination[0].toUpperCase()} title={'move to ' + destination} />
+              </div>
+            </div>
             <CardDisplayer key={c.name}
               view={'COLLAPSED'}
+              cardStyle={{border: { width: '100%'}}}
               data={c}
               collapsed={true}
-              addToDeck={addToDeck}
-              removeFromDeck={removeFromDeck}
-              addToSideboard={addToSideboard}
-              removeFromSideboard={removeFromSideboard}
+              addTo={addTo}
+              removeFrom={removeFrom}
             />
           </li>
         );
       });
   }
 
-  prepareList = (cards) => {
-    const { addToDeck, removeFromDeck, addToSideboard, removeFromSideboard } = this.props;
-    const deckObj    = this.buildDeckObj(cards);
-
+  prepareList = (location, cards) => {
+    const deckObj = this.buildDeckObj(cards);
     const deckList = Object.keys(deckObj).sort().map(cardType => {
-      if ( !deckObj[cardType].length ) { return }; // no cards of the given type
+      const cards = deckObj[cardType];
+      if ( !cards.length ) { return }; // no cards of the given type
 
       return (
         <ul key={cardType} className="deck-list__category">
-          <li className="deck-list__category-title">{ cardType }</li>
-          { this.prepareCategory(deckObj[cardType]) }
+          <li className="deck-list__category-title">
+            <span className="card-count">{ cards.length }</span>
+            <span>{ cardType }</span>
+            <span></span>
+          </li>
+          { this.prepareCategory(location, cards) }
         </ul>
       );
     })
@@ -65,24 +75,22 @@ export default class Deck extends Component {
     return deckList;
   }
 
-  showTips = () => {
-    return (
-      <li style={tipStyle}>
-        Add cards to your deck by clicking <br/>
-        the [+] icon on cards in your search <br/>
-        results.  Collapse this pane to <br/>
-        show card images in search results.
-      </li>
-    );
-  }
-
   render() {
     const { deck, saveDeck, loadDeck, show } = this.props;
 
     if ( !show ) { return (<div className="deck-pane hidden"></div>); }
 
-    const { mainboard, sideboard } = deck;
-    const list = mainboard.length ? this.prepareList(mainboard) : this.showTips();
+    const decklist = ['mainboard', 'sideboard'].map(board => {
+      if ( !deck[board].length ) return;
+      return (
+        <ul key={board} className={`deck-list__${board}`}>
+          <li key={board} className={`deck-list__${board}-title`}>
+            { board === 'mainboard' ? 'Main Deck' : 'Sideboard' }
+          </li>
+          { this.prepareList(board, deck[board]) }
+        </ul>
+      )
+    });
 
     return (
       <div className='deck-pane'>
@@ -90,14 +98,12 @@ export default class Deck extends Component {
           <span title='Hide Deck'>
             <Button handleClick={v => this.props.toggleShow(v)} value={'DECK'} text={'>'} styles={{margin:'2px 10px 2px 0'}}/>
           </span>
-          <span>{ mainboard.length + sideboard.length } total</span>
+          <span>{ deck.mainboard.length + deck.sideboard.length } total</span>
           <span>
             <DeckActions saveDeck={ saveDeck } loadDeck={ loadDeck } />
           </span>
         </div>
-        <ul>
-          { list }
-        </ul>
+        { decklist }
       </div>
     )
   }

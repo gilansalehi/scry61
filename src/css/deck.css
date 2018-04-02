@@ -11,9 +11,21 @@
   box-sizing: border-box;
 }
 
-
 .deck-pane .card-image-container {
   display: none;
+}
+
+.deck-list__sideboard {
+  margin-top: 5px;
+}
+
+.deck-list__mainboard-title, .deck-list__sideboard-title {
+  background: #666;
+  font-weight: bold;
+  line-height: 24px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid black;
 }
 
 .deck-list__category {
@@ -24,6 +36,9 @@
   background: #999;
   border: 1px solid black;
   border-top: none;
+  display: flex;
+  justify-content: space-between;
+  line-height: 24px;
 }
 
 .deck-list__item {
@@ -33,4 +48,18 @@
   display: flex;
 }
 
-.card-count { padding: 0 5px; }
+.card-count { 
+  line-height: 24px; 
+  width: 25px;
+}
+.deck-list__item-info {
+  position: relative;
+  width: 25px;
+  overflow: hidden;
+}
+.deck-list__item-actions {
+  position: absolute;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+}
