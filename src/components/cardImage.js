@@ -158,7 +158,6 @@ export default class CardImage extends Component {
 
     return (
       <img className='card-image'
-        onClick={this.openCardInspector}
         onLoad={this.loadSuccess}
         onError={this.handleError}
         src={sourcePath}

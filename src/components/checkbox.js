@@ -35,4 +35,5 @@ const style = {
   lineHeight: '1.3',
   height: '20px',
   width: '20px',
+  boxSizing: 'content-box',
 }

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
 export default class Button extends Component {
-  handleClick = () => {
+  handleClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const { value } = this.props;
     this.props.handleClick(value);
   }
@@ -11,7 +13,7 @@ export default class Button extends Component {
     return (
       <span style={style} 
         className='hover-highlighter hover-hands' 
-        onClick={this.handleClick} 
+        onClick={e => this.handleClick(e)} 
         title={this.props.title || ''}
       >
         {this.props.text}

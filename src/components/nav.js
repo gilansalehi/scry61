@@ -7,7 +7,9 @@ export default class Nav extends Component {
       <nav className="App-header">
         <ul className="App-header-nav flex">
           <li className="App-header-nav--one">
-            <span className="nav-menu hover-hands" onClick={e => this.props.setShow({ sidebar: true })}>
+            <span className="nav-menu hover-hands" 
+              onClick={e => this.props.setShow({ sidebar: true })}
+            >
               <HamburgerMenu />
             </span>
           </li>
@@ -15,7 +17,10 @@ export default class Nav extends Component {
             <h1>Scry61</h1>
           </li>
           <li className="App-header-nav--three">
-            <span>?</span>
+            <span className="hover-hands" 
+              title="Force Update Card Database"
+              onClick={this.props.forceUpdate}
+            >?</span>
           </li>
         </ul>
       </nav>

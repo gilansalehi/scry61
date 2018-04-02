@@ -6,6 +6,8 @@ export default class Sidebar extends Component {
     const mobile = window.matchMedia('(max-width: 767px)');
     const isMobile = mobile.matches;
 
+    // on mobile, the sidebar should switch panes and close itself.
+    // on desktop, the sidebar should toggle which panes are visible.
     const { show, setShow } = this.props;
     const hideAll = { search: false, results: false, deck: false, sidebar: false };
     const base = isMobile ? hideAll : show;

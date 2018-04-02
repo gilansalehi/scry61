@@ -23,7 +23,7 @@ export default class CardHead extends Component {
     return (
       <div key={name} style={ style.border } className='card-border clearfix'>
         <div className='card-header clearfix'   style={style.header}>
-          <span className='card-title'     style={style.title}   >{name}</span>&nbsp;
+          <span className='card-title'>{name}</span>&nbsp;
           <span className='card-mana-cost' style={style.manaCost}>{manaCost}</span>
         </div>
       </div>
@@ -34,7 +34,6 @@ export default class CardHead extends Component {
 const cardStyle = {
   border: { display: 'inline-block', width: '350px' },
   header: { width: '100%', height: '24px', boxSizing: 'border-box' },
-  title: { fontWeight: 'bold', lineHeight: '24px', float: 'left' },
   manaCost: {
     float: 'right',
     width: '75px',

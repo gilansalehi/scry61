@@ -25,6 +25,10 @@
   justify-content: flex-start;
 }
 
+.App-header-nav--two {
+  justify-content: center;
+}
+
 .App-header-nav--three {
   justify-content: flex-end;
 }
@@ -57,12 +61,17 @@
 
 .inset {
   display: block;
-  padding: 5px 5px 5px 50px;
+  padding: 5px;
   margin: 0 0 5px 0;
   background-color: #666;
   border: 1px solid #222;
   box-shadow: inset 0 0 3px #222;
   font-size: 16px;
+}
+
+.hover-inset:hover {
+  background-color: #666;
+  box-shadow: inset 0 0 3px #222;
 }
 
 .sidebar {

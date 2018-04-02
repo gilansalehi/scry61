@@ -62,6 +62,7 @@ const style = {
   padding: '3px',
   color: '#eee',
   width: '164px',
+  boxSizing: 'content-box',
 };
 
 // pass in the Redux action dispatcher and the

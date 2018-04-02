@@ -22,7 +22,7 @@ class App extends Component {
       filters: {},
       sort: 'name',
       sortDir: 'ASC',
-      deck: [],
+      deck: { title: '', mainboard: [], sideboard: [] },
       deckName: '',
       modal: { show: false, children: [], },
       pending: true,
@@ -57,7 +57,6 @@ class App extends Component {
       caches.open('scry61').then(cache => cache.put('/card-data.json', jsonResponse));
       self.setState({ cards, pending: false });
     });
-    console.timeEnd('fetchAllSets');
   }
 
   buildAllCards = (AllSets) => {
@@ -177,14 +176,29 @@ class App extends Component {
 
   //DECK ACTIONS
   addToDeck = (card) => {
-    const deck = this.state.deck.concat([Object.assign({}, card)]);
-    this.setState({ deck });
+    const mainboard = this.state.deck.mainboard.concat([Object.assign({}, card)]);
+    this.setState({ deck: { ...this.state.deck, mainboard } });
+  }
+
+  addToMainboard = (card) => {
+    this.addToDeck(card);
+  }
+
+  addToSideboard = (card) => {
+    const sideboard = this.state.deck.sideboard.concat([{ ...card }])
+    this.setState({ deck: { ...this.state.deck, sideboard } });
   }
 
   removeFromDeck = (data) => {
-    const card = this.state.deck.find(c => c.name === data.name);
-    const newCards = this.state.deck.filter(c => c !== card);
-    this.setState({ deck: newCards });
+    const card = this.state.deck.mainboard.find(c => c.name === data.name);
+    const mainboard = this.state.deck.mainboard.filter(c => c !== card);
+    this.setState({ deck: { ...this.state.deck, mainboard } });
+  }
+
+  removeFromSideboard = (data) => {
+    const card = this.state.deck.sideboard.find(c => c.name === data.name);
+    const sideboard = this.state.deck.sideboard.find(c => c !== card);
+    this.setState({ deck: { ...this.state.deck, sideboard } });
   }
 
   saveDeck = () => {
@@ -255,7 +269,7 @@ class App extends Component {
     return (
       <div className="App">
         <Sidebar show={show} setShow={this.setShow} />
-        <Nav setShow={this.setShow} />
+        <Nav setShow={this.setShow} forceUpdate={this.fetchSetsFromRemote} />
         <div className="App-intro App-body">
           <Search
             show={show.search}
@@ -269,12 +283,11 @@ class App extends Component {
           <Deck
             show={show.deck}
             toggleShow={this.toggleShow}
-            displayed={show.deck}
             loadDeck={this.loadDeck}
             saveDeck={this.saveDeck}
             addToDeck={this.addToDeck}
             removeFromDeck={this.removeFromDeck}
-            cards={deck}
+            deck={deck}
           />
         </div>
         <div className={modal.show ? 'modal-region' : 'hidden'}>

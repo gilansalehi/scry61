@@ -39,4 +39,5 @@ const cmcStyle = {
   padding: '3px',
   color: '#eee',
   width: '30px',
+  boxSizing: 'content-box',
 };

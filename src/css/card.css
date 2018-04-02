@@ -4,6 +4,7 @@
 
 .card-displayer {
   display: flex;
+  width: 100%;
 }
 
 .card-image-container {
@@ -20,10 +21,42 @@
   flex-direction: column;
   width: 100%;
   flex-shrink: 1;
+  border-left: 1px solid black;
 }
 
 .card-image {
   width: 100%;
+}
+
+.card-title {
+  font-weight: bold;
+  line-height: 24px;
+  float: left;
+}
+
+.card-actions-list .card-title {
+  text-align: center;
+  width: 100%;
+}
+
+.card-actions-list {
+  background: #333;
+}
+
+.card-actions-list li {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 5px;
+  background-color: #444;
+  border-bottom: 1px solid #222;
+}
+
+.card-actions-list li span {
+  flex-grow: 1;
+}
+.card-actions-list li span.hover-hands {
+  flex-grow: 0;
 }
 
 .card-image {

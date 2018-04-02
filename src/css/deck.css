@@ -15,3 +15,22 @@
 .deck-pane .card-image-container {
   display: none;
 }
+
+.deck-list__category {
+  background: #999;
+}
+
+.deck-list__category-title {
+  background: #999;
+  border: 1px solid black;
+  border-top: none;
+}
+
+.deck-list__item {
+  background: #ccc;
+  border: 1px solid black;
+  border-top: none;
+  display: flex;
+}
+
+.card-count { padding: 0 5px; }

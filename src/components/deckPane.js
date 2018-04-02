@@ -6,17 +6,11 @@ import CardDisplayer from './cardDisplayer';
 export default class Deck extends Component {
 
   buildDeckObj = (cards) => {
-    const cardTypes = ['Creature', 'Land', 'Artifact', 'Enchantment', 'Instant', 'Sorcery', 'Planeswalker'];
-    let mainDeck = {
-      Artifact: [],
-      Creature: [],
-      Enchantment: [],
-      Instant: [],
-      Land: [],
-      Planeswalker: [],
-      Sorcery: [],
-      Other: [],
-    };
+    const cardTypes = 'Artifact Creature Enchantment Instant Land Sorcery Planeswalker'.split(' ');
+    let mainDeck = cardTypes.reduce((acc, item) => { 
+      acc[item] = []; 
+      return acc; 
+    }, {});
 
     cards.forEach((card, i) => {
       cardTypes.some((type, i) => {
@@ -28,56 +22,47 @@ export default class Deck extends Component {
     return mainDeck;
   }
 
-  prepareCount = (cards) => {
-    let count = 1;
-    const list = cards.sort((a, b) => a.name < b.name ? 1 : -1).map((card, i) => {
-      const nextCard = cards[i + 1];
-      if ( nextCard && card.name === nextCard.name ) {
-        count += 1;
-        return false;
-      } else {
-        const cardCount = count.toString();
-        count = 1;
-        return Object.assign({}, card, { cardCount });
-      }
-    });
-
-    return list.filter(c => c);
+  prepareCategory = (cards) => {
+    const { addToDeck, removeFromDeck, addToSideboard, removeFromSideboard } = this.props;
+    const byName = (a, b) => a.name < b.name ? -1 : 1;
+    const unique = (card, idx, self) => self.findIndex(c => c.name === card.name) === idx; // returns true if card is first instance with given name in array
+    return cards
+      .sort(byName)
+      .filter(unique)
+      .map((c, i, self) => {
+        return (
+          <li key={i + c.name} className='deck-list__item clearfix'>
+            <span className="card-count">{ cards.filter(x => x.name === c.name).length }</span>
+            <CardDisplayer key={c.name}
+              view={'COLLAPSED'}
+              data={c}
+              collapsed={true}
+              addToDeck={addToDeck}
+              removeFromDeck={removeFromDeck}
+              addToSideboard={addToSideboard}
+              removeFromSideboard={removeFromSideboard}
+            />
+          </li>
+        );
+      });
   }
 
   prepareList = (cards) => {
-    const { addToDeck, removeFromDeck } = this.props;
-    const cardCount  = this.prepareCount(cards);
-    const deckObj    = this.buildDeckObj(cardCount);
+    const { addToDeck, removeFromDeck, addToSideboard, removeFromSideboard } = this.props;
+    const deckObj    = this.buildDeckObj(cards);
 
-    const list = Object.keys(deckObj).sort().reduce((decklist, category, i) => {
-      if ( deckObj[category].length ) {
-        return (decklist.concat([
-          <li key={category + '-spacer'} className='spacer' style={spacerStyle}>
-            <span style={countStyle}>{deckObj[category].reduce((acc, c) => acc += parseInt(c.cardCount), 0)}</span>
-            <span>{ category }</span>
-          </li>,
-          ...deckObj[category].sort((a, b) => a.name < b.name ? -1 : 1).map((c, i) => {
-            return (
-              <li key={i + c.name} className='deck-list-item clearfix' style={resultStyle}>
-                <CardDisplayer key={c.name}
-                  cardStyle={{ border: { width: '300px', display: 'inline-block'} }}
-                  cardCount={ c.cardCount }
-                  view={ 'COLLAPSED' }
-                  data={c}
-                  collapsed={ true }
-                  addToDeck={ addToDeck }
-                  removeFromDeck={ removeFromDeck }
-                />
-              </li>
-            );
-          })
-        ])
-        )
-      } else { return decklist; }
-    }, []);
+    const deckList = Object.keys(deckObj).sort().map(cardType => {
+      if ( !deckObj[cardType].length ) { return }; // no cards of the given type
 
-    return list;
+      return (
+        <ul key={cardType} className="deck-list__category">
+          <li className="deck-list__category-title">{ cardType }</li>
+          { this.prepareCategory(deckObj[cardType]) }
+        </ul>
+      );
+    })
+
+    return deckList;
   }
 
   showTips = () => {
@@ -92,29 +77,20 @@ export default class Deck extends Component {
   }
 
   render() {
-    const { cards, saveDeck, loadDeck, displayed, show } = this.props;
+    const { deck, saveDeck, loadDeck, show } = this.props;
 
     if ( !show ) { return (<div className="deck-pane hidden"></div>); }
 
-    const list = cards.length ? this.prepareList(cards) : this.showTips();
-    const display = displayed ? 'inline-block' : 'none';
-    const deckPaneStyle = Object.assign({}, { display });
-
-    if ( !displayed ) {
-      return (
-        <div className='' style={{display:'inline-block', float:'right', padding: '10px'}} title='Show Deck'>
-          <Button handleClick={val => this.props.toggleShow(val)} value={'DECK'} text={'<'} />
-        </div>
-      );
-    }
+    const { mainboard, sideboard } = deck;
+    const list = mainboard.length ? this.prepareList(mainboard) : this.showTips();
 
     return (
-      <div className='deck-pane' style={deckPaneStyle}>
+      <div className='deck-pane'>
         <div className='deck-info' style={infoStyle}>
           <span title='Hide Deck'>
             <Button handleClick={v => this.props.toggleShow(v)} value={'DECK'} text={'>'} styles={{margin:'2px 10px 2px 0'}}/>
           </span>
-          <span>{ cards.length } total</span>
+          <span>{ mainboard.length + sideboard.length } total</span>
           <span>
             <DeckActions saveDeck={ saveDeck } loadDeck={ loadDeck } />
           </span>
