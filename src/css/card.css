@@ -61,13 +61,30 @@
 
 .card-image {
   background-image: url('https://upload.wikimedia.org/wikipedia/en/a/aa/Magic_the_gathering-card_back.jpg');
-  background-size: 150px 225px;
+  background-size: cover;
   overflow: hidden;
 }
 
 .card-mana-cost {
   white-space: nowrap;
   overflow-x: visible;
+}
+
+.card-border {
+  width: 350px;
+}
+
+.card-actions__slim__container {
+  display: none;
+  position: relative;
+  width: 25px;
+  overflow: hidden;
+}
+.card-actions__slim__actions {
+  position: absolute;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .view--collapsed .card-image-container {
@@ -87,6 +104,18 @@
   }
 
   .results-view--image .card-image-container {
+    display: block;
+  }
+
+  .flip-container {
+    display: none;
+  }
+
+  .card-border {
+    width: 100%;
+  }
+
+  .card-actions__slim__container {
     display: block;
   }
 }

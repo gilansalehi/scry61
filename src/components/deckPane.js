@@ -6,15 +6,18 @@ import CardDisplayer from './cardDisplayer';
 export default class Deck extends Component {
 
   buildDeckObj = (cards) => {
-    const cardTypes = 'Artifact Creature Enchantment Instant Land Sorcery Planeswalker'.split(' ');
-    let deck = cardTypes.reduce((acc, item) => { 
-      acc[item] = []; 
-      return acc; 
+    const cardTypes = 'Artifact Creature Enchantment Instant Land Sorcery Planeswalker Plane Vanguard Scheme'.split(' ');
+    let deck = cardTypes.reduce((acc, item) => {
+      acc[item] = [];
+      return acc;
     }, {});
 
     cards.forEach((card, i) => {
       cardTypes.some((type, i) => {
-        if ( card.types.includes(type) ) { return deck[type].push(card); }
+        if ( card.types.includes(type) ) { 
+          return deck[type].push(card); 
+        }
+
         return false;
       })
     });

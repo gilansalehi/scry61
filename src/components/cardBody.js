@@ -51,9 +51,9 @@ export default class CardBody extends Component {
   }
 
   render() {
-    const { data: { name, type, text, power, toughness, colors, sets, printings }, printing } = this.props;
+    const { data: { name, type, text, power, toughness, colors, sets, printings, loyalty }, printing } = this.props;
     const { showSetPicker } = this.state;
-    const pt = power !== undefined && toughness !== undefined ? [power, toughness].join('/') : '';
+    const pt = power !== undefined && toughness !== undefined ? [power, toughness].join('/') : loyalty || '';
     const style = Object.assign({}, cardStyle, this.props.cardStyle);
     const decoratedText = this.parseSymbols(text);
     const setPicker = <SetPicker card={this.props.data} setPrinting={this.setPrinting} hide={this.hidePicker}/>;

@@ -18,7 +18,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent;
+  background: rgba(0, 0, 0, .5);
   z-index: 50;
 }
 
@@ -51,12 +51,26 @@
   left: 50%;
   width: 50%;
   height: 80%;
-  padding: 10px;
   background: #CCC;
   transform: translateX(-50%) translateY(-50%);
   border: 2px solid black;
   overflow: auto;
   z-index: 150;
+}
+
+.modal__body {
+  padding: 10px;
+}
+
+.close-modal {
+  font-size: 42px;
+  line-height: 24px;
+  color: #333;
+  float: right;
+  margin: 7px;
+}
+.close-modal:hover {
+  color: black;
 }
 
 .hover-highlighter:hover {
@@ -101,8 +115,6 @@
   text-decoration: underline;
 }
 
-
-
 @media screen and (max-width: 767px) {
   .App-body {
     flex-direction: column;
@@ -110,6 +122,19 @@
 
   .search-results {
     width: 100%;
+  }
+
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: auto;
+    background: #CCC;
+    transform: translateX(-50%) translateY(-50%);
+    border: 2px solid black;
+    overflow: auto;
+    z-index: 150;
   }
 }
 

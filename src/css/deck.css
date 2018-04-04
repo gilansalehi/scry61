@@ -63,3 +63,6 @@
   display: flex;
   flex-direction: column;
 }
+.deck-list__item .card-actions__slim__container {
+  display: none;
+}

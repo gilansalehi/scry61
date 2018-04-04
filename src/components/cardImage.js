@@ -109,8 +109,11 @@ export default class CardImage extends Component {
 
   calculateImagePath = (card, printing) => {
     const hyphenize = name => name.toLowerCase().replace(/(,|\?)/g, '').replace(/([^a-z])/g, '-');
-    if (card.type === 'Scheme') {
+    if (card.type === 'Scheme' || card.type === 'Ongoing Scheme') {
       const schemeName = hyphenize(card.name);
+      if (printing.setName === 'Archenemy: Nicol Bolas') {
+        return `http://magiccards.info/extras/scheme/archenemy-nicol-bolas/${schemeName}.jpg`
+      }
       return `http://magiccards.info/extras/scheme/archenemy/${schemeName}.jpg`
     } else if (card.types[0] === 'Plane') {
       const planeName = hyphenize(card.name);
@@ -172,4 +175,4 @@ CardImage.contextTypes = {
   showModal: React.PropTypes.func,
 }
 
-const cardBackImagePath = 'https://hydra-media.cursecdn.com/mtg.gamepedia.com/0/07/Cardback_yellow.jpg?version=01d65cd077a35e9b245ad2a23c99b05e'
+const cardBackImagePath = 'https://upload.wikimedia.org/wikipedia/en/a/aa/Magic_the_gathering-card_back.jpg';

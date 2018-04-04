@@ -32,7 +32,7 @@ export default class CardHead extends Component {
 }
 
 const cardStyle = {
-  border: { display: 'inline-block', width: '350px' },
+  border: { display: 'inline-block' },
   header: { width: '100%', height: '24px', boxSizing: 'border-box' },
   manaCost: {
     float: 'right',

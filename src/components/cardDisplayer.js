@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import Button from './button';
 import CardHead from './cardHead';
 import CardBody from './cardBody';
 import CardActions from './cardActions';
 import CardActionsMenu from './cardActionsMenu';
+import CardActionsMenuSlim from './cardActionsMenuSlim';
 import CardImage from './cardImage';
 import Flipper from './flipContainer';
 
@@ -36,7 +38,9 @@ export default class CardDisplayer extends Component {
         <div className='card-image-container' style={{ width: imgSize + 'px' }}>
           <CardImage card={data} printing={printing} />
         </div>
-        <CardActionsMenu data={data}
+        <CardActionsMenu
+          card={data}
+          printing={printing}
           expanded={['EXPANDED', 'ALL'].includes(view)}
           addTo={addTo}
           removeFrom={removeFrom}
@@ -47,7 +51,8 @@ export default class CardDisplayer extends Component {
 
     return (
       <div key={data.name + view} className={`card-displayer view--${view.toLowerCase()}`}>
-        { ['ALL', 'EXPANDED', 'IMAGE'].includes(view) && image }
+        {['ALL', 'EXPANDED', 'IMAGE'].includes(view) && image}
+        <CardActionsMenuSlim card={data} printing={printing} addTo={addTo} removeFrom={removeFrom} />
         <div className='card-data-container'>
           <div className='card-header-bar hover-hands' style={style.header} onClick={this.toggleView}>
             <CardHead data={data} view={view} cardStyle={cardStyle} />
