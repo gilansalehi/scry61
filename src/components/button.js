@@ -12,7 +12,7 @@ export default class Button extends Component {
     const style = Object.assign({}, buttonStyle, this.props.styles);
     return (
       <span style={style} 
-        className='hover-highlighter hover-hands' 
+        className='button hover-highlighter hover-hands' 
         onClick={e => this.handleClick(e)} 
         title={this.props.title || ''}
       >

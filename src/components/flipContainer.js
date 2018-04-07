@@ -24,7 +24,8 @@ export default class Flipper extends Component {
         style={{ width, height }}
       >
         <div key='flip-content' className="flip-content">
-          <div key='flip-content--front' className="flip-content--front" style={{ width, height }}>
+          <div key='flip-content--front' className="flip-content--front hover-hands" style={{ width, height }}>
+            <div className="flip-indicator" title="flip over">↶</div>
             { this.props.children[0] }
           </div>
           <div key='flip-content--back' className="flip-content--back" style={{ width, height }}>

@@ -23,6 +23,12 @@ export default class Results extends Component {
     this.props.cards.length !== nextProps.cards.length && this.setPage(0);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.page !== this.state.page) {
+      this.resultsList.scrollTop = 0; 
+    }
+  }
+
   incrementImgSize = () => {
     const imgSize = Math.min(300, this.state.imgSize + 25);
     this.setState({ imgSize });
@@ -34,24 +40,25 @@ export default class Results extends Component {
   }
 
   prepareResults = () => {
-    const {cards} = this.props;
-    const {page, pageSize, cardView, imgSize} = this.state;
+    const { cards } = this.props;
+    const { page, pageSize, cardView, imgSize } = this.state;
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
-    const [start, end] = [currentPage*pageSize, (currentPage + 1)*pageSize];
+    const [start, end] = [currentPage * pageSize, (currentPage + 1) * pageSize];
     const customStyle = {
-      countStyle: {width:'150px', display:'inline-block'},
+      countStyle: { width: '150px', display: 'inline-block' },
     };
 
     return cards.slice(start, end).map((c, i) => {
       return (
-        <li key={ i + cardView } style={resultStyle} className='result-list-item clearfix'>
+        <li key={i + cardView} style={resultStyle} className='result-list-item clearfix'>
           <CardDisplayer key={c.name}
             style={customStyle}
             data={c}
             showSet={true}
-            view={ cardView }
-            imgSize={ imgSize }
+            view={cardView}
+            imgSize={imgSize}
+            itemNo={i}
           />
         </li>
       );
@@ -82,14 +89,14 @@ export default class Results extends Component {
     const { page, pageSize, moreOptions, cardView } = this.state;
     const { sort, sortDir, updateSorts, cards, show } = this.props;
 
-    if ( !show ) { return (<div className="hidden"></div>); }
+    if (!show) { return (<div className="hidden"></div>); }
 
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
     const results = this.prepareResults(true);
     const sortsMenu = (
-      <ViewOptions 
-        sort={sort} 
+      <ViewOptions
+        sort={sort}
         sortDir={sortDir}
         updateSorts={updateSorts}
         setDefaultCardView={this.setDefaultCardView}
@@ -101,39 +108,39 @@ export default class Results extends Component {
     return (
       <div className={`search-results clearfix results-view--${cardView.toLowerCase()}`}>
         <div className='results-info'>
-          <span> Results: { cards.length } |
-            Per Page: <input value={ pageSize } onChange={(e) => this.setPageSize(e)} style={inputStyle} />
+          <span> Results: {cards.length} |
+            Per Page: <input value={pageSize} onChange={(e) => this.setPageSize(e)} style={inputStyle} />
           </span>
           <PageJumper currentPage={currentPage} pageSize={pageSize} maxPage={maxPage} setPage={this.setPage} />
-          <span className='expando hover-hands' title="Sorts and View Options" onClick={ this.toggleShow }>
-            Options: { this.state.moreOptions ? '▴' : '▾' }
+          <span className='expando hover-hands' title="Sorts and View Options" onClick={this.toggleShow}>
+            Options: {this.state.moreOptions ? '▴' : '▾'}
           </span>
         </div>
         <div>
-          { moreOptions && sortsMenu }
+          {moreOptions && sortsMenu}
         </div>
-        <ul className='results-list' >
-          { results }
+        <ul className='results-list' ref={self => this.resultsList = self}>
+          {results}
         </ul>
         <div className='results-info' style={infoStyle}>
-          Results: { cards.length }
+          Results: {cards.length}
           <PageJumper currentPage={currentPage} pageSize={pageSize} maxPage={maxPage} setPage={this.setPage} />
         </div>
-       </div>
+      </div>
     );
   }
 }
 
 const resultStyle = {
-  listStyle:'none',
-  background:'#ccc',
-  border:'1px solid black',
-  margin:'5px',
+  listStyle: 'none',
+  background: '#ccc',
+  border: '1px solid black',
+  margin: '5px',
 };
 
 const infoStyle = {
   display: 'flex',
-  justifyContent:'space-between',
+  justifyContent: 'space-between',
   textAlign: 'left',
   padding: '10px 5px 5px 5px',
   color: '#ccc',
@@ -142,10 +149,10 @@ const infoStyle = {
 
 const inputStyle = {
   width: '50px',
-  background:'transparent',
-  fontFamily:'inherit',
+  background: 'transparent',
+  fontFamily: 'inherit',
   color: 'inherit',
-  boxShadow:'none',
+  boxShadow: 'none',
   border: 'none',
   fontSize: '18px',
 };

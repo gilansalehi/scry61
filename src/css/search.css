@@ -22,6 +22,10 @@ label {
   flex-grow: 0;
 }
 
+.search-pane .button {
+  line-height: 21px;
+}
+
 
 .search-header {
   margin: 0 0 5px 0;
