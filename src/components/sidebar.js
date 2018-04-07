@@ -16,7 +16,7 @@ export default class Sidebar extends Component {
     return panes.map((pane, i) => {
       return (
         <li key={i} className='hover-hands' 
-          onClick={e => { setShow({ ...base, ...{ [pane]: !show[pane] } }) }}
+          onClick={e => { setShow({ ...base, ...{ [pane]: isMobile || !show[pane] } }) }}
         >
           <span className={`side-bar-list-item ${show[pane] ? 'bold' : ''}`}>
             { show[pane] ? `- ${pane} -` : pane }

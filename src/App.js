@@ -40,6 +40,7 @@ class App extends Component {
       })
       .catch(err => {
         console.log('fetching card data from remote');
+        debugger;
         this.fetchSetsFromRemote();
       });
   }
@@ -115,6 +116,9 @@ class App extends Component {
       deckName: self.state.deckName,
       showModal: self.showModal,
       setShow: self.setShow,
+      addTo: self.addTo,
+      removeFrom: self.removeFrom,
+      moveTo: self.moveTo,
     }
   }
 
@@ -257,6 +261,7 @@ class App extends Component {
         show={show.results}
         addTo={this.addTo}
         removeFrom={this.removeFrom}
+        moveTo={this.moveTo}
         updateSorts={this.updateSorts}
         sort={sort}
         sortDir={sortDir}
@@ -305,6 +310,9 @@ App.childContextTypes = {
   deckName: React.PropTypes.string,
   showModal: React.PropTypes.func,
   setShow: React.PropTypes.func,
+  addTo: React.PropTypes.func,
+  removeFrom: React.PropTypes.func,
+  moveTo: React.PropTypes.func,
 };
 
 const buttonStyle = {

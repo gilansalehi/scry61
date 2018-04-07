@@ -33,6 +33,15 @@
   justify-content: flex-end;
 }
 
+.App-header-nav--three .dropdown-menu .expando {
+  font-size: 28px;
+  height: 32px;
+  width: 32px;
+  line-height: 32px;
+  margin: 0 10px;
+  display: block;
+}
+
 .App-header h1 {
   font-size: 50px;
   font-weight: normal;

@@ -16,7 +16,7 @@ export default class Button extends Component {
         onClick={e => this.handleClick(e)} 
         title={this.props.title || ''}
       >
-        {this.props.text}
+        {this.props.text || this.props.children}
       </span>
     )
   }
@@ -31,5 +31,4 @@ const buttonStyle = {
   color: '#ddd',
   margin: '2px',
   textAlign: 'center',
-  lineHeight: '21px',
 };

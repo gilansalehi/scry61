@@ -36,21 +36,13 @@ export default class Deck extends Component {
       .map((c, i, self) => {
         return (
           <li key={i + c.name} className='deck-list__item clearfix'>
-            <div className="deck-list__item-info">
-              <span className="card-count">{ cards.filter(x => x.name === c.name).length }</span>
-              <div className="deck-list__item-actions">
-                <Button handleClick={v => addTo(location, v)} value={c} text={'+'} title='add' />
-                <Button handleClick={v => removeFrom(location, v)} value={c} text={'─'} title='remove' />
-                <Button handleClick={v => moveTo(destination, v)} value={c} text={destination[0].toUpperCase()} title={'move to ' + destination} />
-              </div>
-            </div>
             <CardDisplayer key={c.name}
+              cardCount={cards.filter(x => x.name === c.name).length}
               view={'COLLAPSED'}
               cardStyle={{border: { width: '100%'}}}
               data={c}
               collapsed={true}
-              addTo={addTo}
-              removeFrom={removeFrom}
+              location={location}
             />
           </li>
         );
@@ -98,9 +90,6 @@ export default class Deck extends Component {
     return (
       <div className='deck-pane'>
         <div className='deck-info' style={infoStyle}>
-          <span title='Hide Deck'>
-            <Button handleClick={v => this.props.toggleShow(v)} value={'DECK'} text={'>'} styles={{margin:'2px 10px 2px 0'}}/>
-          </span>
           <span>{ deck.mainboard.length + deck.sideboard.length } total</span>
           <span>
             <DeckActions saveDeck={ saveDeck } loadDeck={ loadDeck } />

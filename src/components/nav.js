@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import HamburgerMenu from './icon_menu';
+import Dropdown from './dropdown';
 
 export default class Nav extends Component {
   render() {
@@ -17,10 +18,12 @@ export default class Nav extends Component {
             <h1>Scry61</h1>
           </li>
           <li className="App-header-nav--three">
-            <span className="hover-hands" 
-              title="Force Update Card Database"
-              onClick={this.props.forceUpdate}
-            >?</span>
+            <Dropdown>
+              <span className="hover-hands" 
+                title="Force Update Card Database"
+                onClick={this.props.forceUpdate}
+              >Force Update</span>
+            </Dropdown>
           </li>
         </ul>
       </nav>

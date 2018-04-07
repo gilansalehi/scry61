@@ -3,7 +3,7 @@
   float: right;
   width: 400px;
   justify-content: flex-start;
-  padding: 10px;
+  padding: 5px;
   height: 100%;
   flex-shrink: 0;
   flex-grow: 0;
@@ -64,5 +64,15 @@
   flex-direction: column;
 }
 .deck-list__item .card-actions__slim__container {
+  display: block;
+}
+
+.deck-list__mainboard .card-actions__slim__sideboard--add,
+.deck-list__mainboard .card-actions__slim__sideboard--remove {
+  display: none;
+}
+
+.deck-list__sideboard .card-actions__slim__mainboard--add,
+.deck-list__sideboard .card-actions__slim__mainboard--remove {
   display: none;
 }

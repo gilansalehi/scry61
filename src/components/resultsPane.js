@@ -34,8 +34,8 @@ export default class Results extends Component {
   }
 
   prepareResults = () => {
-    const {cards, addTo, removeFrom} = this.props;
-    const {page, pageSize, cardView, imgSize } = this.state;
+    const {cards} = this.props;
+    const {page, pageSize, cardView, imgSize} = this.state;
     const maxPage = Math.floor(cards.length / pageSize);
     const currentPage = Math.min(page, maxPage);
     const [start, end] = [currentPage*pageSize, (currentPage + 1)*pageSize];
@@ -52,8 +52,6 @@ export default class Results extends Component {
             showSet={true}
             view={ cardView }
             imgSize={ imgSize }
-            addTo={ addTo }
-            removeFrom={ removeFrom }
           />
         </li>
       );

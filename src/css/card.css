@@ -74,11 +74,18 @@
   width: 350px;
 }
 
+.card-actions__slim__menu-container {
+  overflow: hidden;
+  position: relative;
+}
+
 .card-actions__slim__container {
   display: none;
-  position: relative;
   width: 25px;
-  overflow: hidden;
+  font-family: monospace;
+}
+.card-actions__slim__container sup {
+  font-family: monospace;
 }
 .card-actions__slim__actions {
   position: absolute;
@@ -109,6 +116,10 @@
 
   .flip-container {
     display: none;
+  }
+
+  .results-view--image .flip-container {
+    display: block;
   }
 
   .card-border {

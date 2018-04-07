@@ -31,7 +31,8 @@ export default class CardDisplayer extends Component {
 
   render() {
     const { view, printing } = this.state;
-    const { data, cardCount, cardStyle, showSet, imgSize, addTo, removeFrom } = this.props;
+    const { data, cardCount, cardStyle, showSet, imgSize, location } = this.props;
+    const { addTo, removeFrom, moveTo } = this.context;
     const style = Object.assign({}, styles, this.props.style);
     const image = (
       <Flipper size={imgSize}>
@@ -52,7 +53,10 @@ export default class CardDisplayer extends Component {
     return (
       <div key={data.name + view} className={`card-displayer view--${view.toLowerCase()}`}>
         {['ALL', 'EXPANDED', 'IMAGE'].includes(view) && image}
-        <CardActionsMenuSlim card={data} printing={printing} addTo={addTo} removeFrom={removeFrom} />
+        <div className="card-actions__slim__menu-container">
+          <span className="card-count">{ cardCount || '' }</span>
+          <CardActionsMenuSlim card={data} printing={printing} location={location} />
+        </div>
         <div className='card-data-container'>
           <div className='card-header-bar hover-hands' style={style.header} onClick={this.toggleView}>
             <CardHead data={data} view={view} cardStyle={cardStyle} />
@@ -69,6 +73,13 @@ export default class CardDisplayer extends Component {
       </div>
     )
   }
+}
+
+CardDisplayer.contextTypes = {
+  showModal: React.PropTypes.func,
+  addTo: React.PropTypes.func,
+  removeFrom: React.PropTypes.func,
+  moveTo: React.PropTypes.func,
 }
 
 const styles = {

@@ -5,6 +5,10 @@
   max-height: 80vh;
 }
 
+.results-list .card-actions__slim__move-button {
+  display: none;
+}
+
 .result-list-item {
   flex-wrap: wrap;
   list-style: none;
@@ -25,15 +29,16 @@
 
 .view-options {
   font-Family: "Cinzel", serif;
-  display: inline-block;
   position:relative;
   padding: 5px 10px;
   margin: 5px;
   color: white;
+  display: flex;
 }
 
-.view-options {
-  display: flex;
+
+.view-options.inset {
+  margin: 5px;
 }
 
 .view-options-ul {
@@ -46,6 +51,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.results-view--image .card-actions__slim__menu-container {
+  display: none;
 }
 
 @media screen and (max-width: 767px) {
