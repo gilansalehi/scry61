@@ -55,7 +55,7 @@ export default class CardDisplayer extends Component {
       <div key={data.name + view} className={`card-displayer view--${view.toLowerCase()}`}>
         {['ALL', 'EXPANDED', 'IMAGE'].includes(view) && image}
         <div className="card-actions__slim__menu-container">
-          <span className="card-count">{ cardCount || '' }</span>
+          <span className="card-count" onClick={this.toggleView}>{ cardCount || '' }</span>
           <CardActionsMenuSlim card={data} printing={printing} location={location} />
         </div>
         <div className='card-data-container'>

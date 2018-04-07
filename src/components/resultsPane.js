@@ -9,10 +9,13 @@ export default class Results extends Component {
   constructor(props) {
     super(props);
 
+    const mobile = window.matchMedia('(max-width: 767px)');
+    const isMobile = mobile.matches;
+
     this.state = {
       page: 0,
       pageSize: 50,
-      cardView: 'ALL',
+      cardView: isMobile ? 'IMAGE' : 'ALL',
       imgSize: 200,
       moreOptions: false,
       sorts: {},

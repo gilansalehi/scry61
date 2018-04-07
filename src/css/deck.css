@@ -51,6 +51,8 @@
 .card-count { 
   line-height: 24px; 
   width: 25px;
+  height: 24px;
+  display: block;
 }
 .deck-list__item-info {
   position: relative;
