@@ -46,6 +46,7 @@ export default class CardDisplayer extends Component {
           addTo={addTo}
           removeFrom={removeFrom}
           toggleView={this.toggleView}
+          setPrinting={this.setPrinting}
         />
       </Flipper>
     );

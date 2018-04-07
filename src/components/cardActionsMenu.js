@@ -16,8 +16,25 @@ export default class CardActionsMenu extends CardImage {
     this.openCardInspector();
   }
 
+  changePrinting(dir) {
+    const {setPrinting, printing, card} = this.props;
+    const mod = card.printings.length;
+    const curr = card.printings.findIndex((which) => which.set === printing.set);
+    let nextPrinting = (dir === 'next' ? curr + 1 : curr - 1) % mod;
+    if (nextPrinting < 0) nextPrinting += mod;
+    setPrinting(card.printings[nextPrinting]);
+  }
+
   render() {
-    const { addTo, removeFrom, card } = this.props;
+    const { addTo, removeFrom, card, printing } = this.props;
+    const swapPrintings = (
+      <li>
+        <Button handleClick={e => this.changePrinting('prev', card)} text='─' />
+        <span onClick={this.noFlip}>Set: {printing.set}</span>
+        <Button handleClick={e => this.changePrinting('next', card)} text='+' />
+      </li>
+    );
+
     return (
       <ul className='card-actions-list'>
         <li>
@@ -36,6 +53,7 @@ export default class CardActionsMenu extends CardImage {
           <span onClick={this.noFlip}>Sideboard</span>
           <Button handleClick={e => addTo('sideboard', card)} text='+' />
         </li>
+        { card.printings.length > 1 && swapPrintings }
         <li className="hover-inset hover-hands">
           <span>Flip Back</span>
         </li>
