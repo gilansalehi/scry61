@@ -40,7 +40,6 @@ class App extends Component {
       })
       .catch(err => {
         console.log('fetching card data from remote');
-        debugger;
         this.fetchSetsFromRemote();
       });
   }
