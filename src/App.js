@@ -31,7 +31,15 @@ class App extends Component {
 
   // STARTUP
   componentDidMount() {
-    let self = this;
+    try {
+      this.fetchSetsFromCache();
+    } catch (err) {
+      console.log(err);
+      this.fetchSetsFromRemote();
+    }
+  }
+
+  fetchSetsFromCache = () => {
     caches.match('/card-data.json')
       .then(response => response.json())
       .then(data => {
@@ -54,8 +62,14 @@ class App extends Component {
       const jsonResponse = new Response(JSON.stringify(cards), {
         headers: { 'content-type': 'application/json' }
       });
-      caches.open('scry61').then(cache => cache.put('/card-data.json', jsonResponse));
-      self.setState({ cards, pending: false });
+      try {
+        caches.open('scry61').then(cache => cache.put('/card-data.json', jsonResponse));
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log('executing finally');
+        self.setState({ cards, pending: false });
+      }
     });
   }
 

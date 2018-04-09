@@ -10,6 +10,7 @@
 
 body {
   background-color: #444;
+  -ms-overflow-style: none;
 }
 
 ul, li {

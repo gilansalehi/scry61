@@ -83,8 +83,9 @@
 }
 
 .search-results {
-  display: block;
-  float: left;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 77px);
   flex-shrink: 1;
   flex-grow: 1;
 }
